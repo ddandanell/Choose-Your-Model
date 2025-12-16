@@ -5,6 +5,5 @@
   "framework": null,
   "installCommand": null,
   "cleanUrls": true,
-  "trailingSlash": false,
-  "ignoreCommand": "git diff --quiet HEAD^ HEAD ./"
+  "trailingSlash": false
 }
