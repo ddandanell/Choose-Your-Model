@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Model 1 - Private Chef Booking</title>
+    <link rel="stylesheet" href="model1.css">
+</head>
+<body>
+    <div class="booking-container">
+        <!-- Progress Header -->
+        <header class="progress-header">
+            <div class="step-counter">Step <span id="current-slide">1</span> of <span id="total-slides">8</span></div>
+            <div class="step-label" id="step-label">Date</div>
+        </header>
+
+        <!-- Progress Bar with Step Indicators -->
+        <div class="progress-steps">
+            <div class="step-indicator" data-step="1">
+                <div class="step-circle" id="step-circle-1"></div>
+                <span class="step-name">Date</span>
+            </div>
+            <div class="step-indicator" data-step="2">
+                <div class="step-circle" id="step-circle-2"></div>
+                <span class="step-name">Guests</span>
+            </div>
+            <div class="step-indicator" data-step="3">
+                <div class="step-circle" id="step-circle-3"></div>
+                <span class="step-name">Time</span>
+            </div>
+            <div class="step-indicator" data-step="4">
+                <div class="step-circle" id="step-circle-4"></div>
+                <span class="step-name">Cuisine</span>
+            </div>
+            <div class="step-indicator" data-step="5">
+                <div class="step-circle" id="step-circle-5"></div>
+                <span class="step-name">Courses</span>
+            </div>
+            <div class="step-indicator" data-step="6">
+                <div class="step-circle" id="step-circle-6"></div>
+                <span class="step-name">Price Tier</span>
+            </div>
+            <div class="step-indicator" data-step="7">
+                <div class="step-circle" id="step-circle-7"></div>
+                <span class="step-name">Menu</span>
+            </div>
+            <div class="step-indicator" data-step="8">
+                <div class="step-circle" id="step-circle-8"></div>
+                <span class="step-name">Summary</span>
+            </div>
+        </div>
+
+        <!-- Slide Container -->
+        <div class="slides-container">
+            <!-- SLIDE 1: Date & Service -->
+            <div class="slide active" data-slide="1">
+                <div class="slide-content">
+                    <h1 class="slide-title">When would you like your chef to visit?</h1>
+                    <p class="slide-subtitle">Choose a date for your private dining experience.</p>
+                    
+                    <div class="form-group">
+                        <label for="booking-date">Date</label>
+                        <div class="date-input-wrapper">
+                            <span class="date-icon">📅</span>
+                            <input type="date" id="booking-date" required>
+                            <span class="date-display" id="date-display">Select a date</span>
+                        </div>
+                    </div>
+                    
+                    <div class="service-info-box">
+                        <div class="service-icon">🌙</div>
+                        <div class="service-content">
+                            <div class="service-title">Dinner Service</div>
+                            <div class="service-desc">Our chefs specialize in creating memorable dinner experiences</div>
+                        </div>
+                    </div>
+                    
+                    <div class="confirmation-text" id="date-confirmation" style="display: none;">
+                        Your chef will visit on <strong id="confirmation-date"></strong>.
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 2: Guest Count & Dietary -->
+            <div class="slide" data-slide="2">
+                <div class="slide-content">
+                    <h1 class="slide-title">How many guests are joining?</h1>
+                    <p class="slide-subtitle">Tell us about your party size</p>
+                    
+                    <div class="guests-section">
+                        <div class="guest-category">
+                            <div class="category-icon">👥</div>
+                            <div class="category-content">
+                                <div class="category-title">Adults</div>
+                                <div class="category-subtitle">11+ years</div>
+                                <div class="quantity-selector">
+                                    <button type="button" class="qty-btn minus" id="adults-minus">−</button>
+                                    <span class="qty-value" id="adults-value">4</span>
+                                    <button type="button" class="qty-btn plus" id="adults-plus">+</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="guest-category">
+                            <div class="category-icon">👶</div>
+                            <div class="category-content">
+                                <div class="category-title">Children</div>
+                                <div class="category-subtitle">Age-based pricing applies</div>
+                                
+                                <div class="children-ages">
+                                    <div class="age-group">
+                                        <div class="age-label">0-4 years</div>
+                                        <div class="age-badge free">Free</div>
+                                        <div class="quantity-selector small">
+                                            <button type="button" class="qty-btn minus" id="children0to4-minus">−</button>
+                                            <span class="qty-value" id="children0to4-value">0</span>
+                                            <button type="button" class="qty-btn plus" id="children0to4-plus">+</button>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="age-group">
+                                        <div class="age-label">5-10 years</div>
+                                        <div class="age-badge discount">50% off</div>
+                                        <div class="quantity-selector small">
+                                            <button type="button" class="qty-btn minus" id="children5to10-minus">−</button>
+                                            <span class="qty-value" id="children5to10-value">0</span>
+                                            <button type="button" class="qty-btn plus" id="children5to10-plus">+</button>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="age-group">
+                                        <div class="age-label">11+ years</div>
+                                        <div class="age-badge full">Full price</div>
+                                        <div class="quantity-selector small">
+                                            <button type="button" class="qty-btn minus" id="children11-minus">−</button>
+                                            <span class="qty-value" id="children11-value">0</span>
+                                            <button type="button" class="qty-btn plus" id="children11-plus">+</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="total-guests-footer">
+                        Total guests: <span id="total-guests-count">4</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 3: Dining Time -->
+            <div class="slide" data-slide="3">
+                <div class="slide-content">
+                    <h1 class="slide-title">What time would you like to dine?</h1>
+                    <p class="slide-subtitle">This is when you'd like to start eating, not when the chef arrives</p>
+                    
+                    <div class="info-banner">
+                        <div class="info-icon">⏰</div>
+                        <div class="info-text">Your chef will arrive 3 hours before your selected dining time to prepare everything fresh.</div>
+                    </div>
+                    
+                    <div class="time-slots-grid" id="time-slots">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                    
+                    <div class="time-summary" id="time-summary" style="display: none;">
+                        <div>Dinner will be served at <strong id="selected-time-display"></strong></div>
+                        <div class="chef-arrival">Chef arrives around <strong id="chef-arrival-time"></strong> to begin preparations</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 4: Cuisine Selection -->
+            <div class="slide" data-slide="4">
+                <div class="slide-content">
+                    <h1 class="slide-title">Choose Your Cuisine</h1>
+                    <p class="slide-subtitle">Select the culinary tradition for your dinner</p>
+                    
+                    <div class="cuisine-cards">
+                        <div class="cuisine-card active" data-cuisine="indonesian">
+                            <div class="cuisine-checkmark">✓</div>
+                            <div class="cuisine-image indonesian-img">
+                                <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=800&h=600&fit=crop&q=80" alt="Indonesian food" />
+                            </div>
+                            <div class="cuisine-name">Indonesian</div>
+                            <div class="cuisine-desc">Authentic flavors from across the archipelago</div>
+                            <div class="cuisine-note">This is the only one we have created, just an example.</div>
+                            <div class="cuisine-tags">
+                                <span class="cuisine-tag">Rendang</span>
+                                <span class="cuisine-tag">Satay</span>
+                                <span class="cuisine-tag">Gado-Gado</span>
+                                <span class="cuisine-tag">Bebek Betutu</span>
+                            </div>
+                        </div>
+                        
+                        <div class="cuisine-card coming-soon" data-cuisine="japanese">
+                            <div class="coming-soon-badge">
+                                <span class="coming-soon-icon">⏳</span>
+                                <span>Coming Soon</span>
+                            </div>
+                            <div class="cuisine-image japanese-img">
+                                <img src="https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=800&h=600&fit=crop&q=80" alt="Japanese food" />
+                            </div>
+                            <div class="cuisine-name">Japanese</div>
+                            <div class="cuisine-desc">Refined omakase-style dining</div>
+                            <div class="cuisine-tags">
+                                <span class="cuisine-tag">Sushi</span>
+                                <span class="cuisine-tag">Tempura</span>
+                                <span class="cuisine-tag">Wagyu</span>
+                            </div>
+                        </div>
+                        
+                        <div class="cuisine-card coming-soon" data-cuisine="italian">
+                            <div class="coming-soon-badge">
+                                <span class="coming-soon-icon">⏳</span>
+                                <span>Coming Soon</span>
+                            </div>
+                            <div class="cuisine-image italian-img">
+                                <img src="https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=800&h=600&fit=crop&q=80" alt="Italian food" />
+                            </div>
+                            <div class="cuisine-name">Italian</div>
+                            <div class="cuisine-desc">Classic Mediterranean flavors</div>
+                            <div class="cuisine-tags">
+                                <span class="cuisine-tag">Pasta</span>
+                                <span class="cuisine-tag">Risotto</span>
+                                <span class="cuisine-tag">Ossobuco</span>
+                            </div>
+                        </div>
+                        
+                        <div class="cuisine-card coming-soon" data-cuisine="french">
+                            <div class="coming-soon-badge">
+                                <span class="coming-soon-icon">⏳</span>
+                                <span>Coming Soon</span>
+                            </div>
+                            <div class="cuisine-image french-img">
+                                <img src="https://images.unsplash.com/photo-1544025162-d76694265947?w=800&h=600&fit=crop&q=80" alt="French food" />
+                            </div>
+                            <div class="cuisine-name">French</div>
+                            <div class="cuisine-desc">Elegant haute cuisine</div>
+                            <div class="cuisine-tags">
+                                <span class="cuisine-tag">Duck Confit</span>
+                                <span class="cuisine-tag">Bouillabaisse</span>
+                                <span class="cuisine-tag">Soufflé</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="coming-soon-banner">
+                        <div class="banner-icon">🍴</div>
+                        <div class="banner-text">More cuisines coming soon! We're expanding our chef network to bring you Japanese, Italian, and French dining experiences.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 5: Course Selection -->
+            <div class="slide" data-slide="5">
+                <div class="slide-content">
+                    <h1 class="slide-title">How many courses would you like?</h1>
+                    <p class="slide-subtitle">Each option offers a different dining experience</p>
+                    
+                    <div class="course-cards">
+                        <div class="course-card" data-courses="3">
+                            <div class="course-header">
+                                <div class="course-title">3-Course (Simple)</div>
+                                <div class="course-count">3 courses</div>
+                            </div>
+                            <div class="course-desc">A refined dining experience with starters, main, and dessert</div>
+                            <div class="course-requirement">
+                                <span class="req-icon">👥</span>
+                                <span>Minimum 4 adults required</span>
+                            </div>
+                        </div>
+                        
+                        <div class="course-card active recommended" data-courses="4">
+                            <div class="recommended-badge">
+                                <span class="star-icon">⭐</span>
+                                <span>Recommended</span>
+                            </div>
+                            <div class="course-header">
+                                <div class="course-title">4-Course</div>
+                                <div class="course-count">4 courses</div>
+                            </div>
+                            <div class="course-desc">Our most popular choice with small bites, starters, main, and dessert</div>
+                            <div class="course-requirement">
+                                <span class="req-icon">👥</span>
+                                <span>Minimum 4 adults required</span>
+                            </div>
+                        </div>
+                        
+                        <div class="course-card" data-courses="5" id="course-5-card">
+                            <div class="course-header">
+                                <div class="course-title">5-Course (Full Experience)</div>
+                                <div class="course-count">5 courses</div>
+                            </div>
+                            <div class="course-desc">The complete culinary journey with all courses</div>
+                            <div class="course-requirement">
+                                <span class="req-icon">👥</span>
+                                <span>Minimum 6 adults required</span>
+                                <span class="need-more-badge" id="need-more-badge" style="display: none;">Need 2 more</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 6: Price Tier -->
+            <div class="slide" data-slide="6">
+                <div class="slide-content">
+                    <h1 class="slide-title">Select Your Experience Level</h1>
+                    <p class="slide-subtitle">Choose the quality tier that matches your occasion</p>
+                    
+                    <div class="tier-cards" id="tier-cards">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 7: Menu Customization -->
+            <div class="slide" data-slide="7">
+                <div class="slide-content">
+                    <h1 class="slide-title">Customize Your Menus</h1>
+                    <p class="slide-subtitle">Personalize each guest's menu selection</p>
+                    
+                    <div class="guests-menu-list" id="guests-menu-list">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 8: Order Summary -->
+            <div class="slide" data-slide="8">
+                <div class="slide-content summary-content">
+                    <h1 class="slide-title">Your Booking Summary</h1>
+                    <p class="slide-subtitle">Review your private chef experience details</p>
+                    
+                    <div class="summary-layout">
+                        <div class="summary-left">
+                            <div class="summary-card">
+                                <div class="summary-card-header">
+                                    <span class="summary-icon">📅</span>
+                                    <h3>Event Details</h3>
+                                </div>
+                                <div class="summary-item">
+                                    <span>Date:</span>
+                                    <span id="summary-date"></span>
+                                </div>
+                                <div class="summary-item">
+                                    <span>Dinner Time:</span>
+                                    <span id="summary-time"></span>
+                                </div>
+                                <div class="summary-item">
+                                    <span>Cuisine:</span>
+                                    <span id="summary-cuisine"></span>
+                                </div>
+                            </div>
+                            
+                            <div class="summary-card">
+                                <div class="summary-card-header">
+                                    <span class="summary-icon">👥</span>
+                                    <h3>Guests</h3>
+                                </div>
+                                <div class="summary-item">
+                                    <span>Adults:</span>
+                                    <span id="summary-adults"></span>
+                                </div>
+                                <div class="summary-item">
+                                    <span>Total Guests:</span>
+                                    <span id="summary-total-guests"></span>
+                                </div>
+                            </div>
+                            
+                            <div class="summary-card">
+                                <div class="summary-card-header">
+                                    <span class="summary-icon">🍽️</span>
+                                    <h3>Menu Selection</h3>
+                                </div>
+                                <div class="summary-item">
+                                    <span>Package:</span>
+                                    <span id="summary-package"></span>
+                                </div>
+                                <div class="summary-item">
+                                    <span>Experience:</span>
+                                    <span id="summary-experience"></span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="summary-right">
+                            <div class="summary-card">
+                                <div class="summary-card-header">
+                                    <h3>Price Breakdown</h3>
+                                </div>
+                                <div class="price-breakdown">
+                                    <div class="price-row">
+                                        <span id="price-adults-line"></span>
+                                        <span id="price-adults-total"></span>
+                                    </div>
+                                    <div class="price-row total">
+                                        <span>Total:</span>
+                                        <span id="price-total"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="summary-card">
+                                <div class="summary-card-header">
+                                    <span class="summary-icon">📋</span>
+                                    <h3>All-Inclusive Experience</h3>
+                                </div>
+                                <div class="summary-text">Price includes all groceries, ingredients, cooking at your home, serving, and kitchen cleanup.</div>
+                            </div>
+                            
+                            <div class="summary-card">
+                                <div class="summary-card-header">
+                                    <span class="summary-icon">👨‍🍳</span>
+                                    <h3>What to Expect</h3>
+                                </div>
+                                <ul class="expectations-list">
+                                    <li>✅ Chef arrives 3 hours before dinner</li>
+                                    <li>✅ Fresh ingredients prepared on-site</li>
+                                    <li>✅ Professional service and presentation</li>
+                                    <li>✅ Kitchen left spotless after service</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="navigation">
+            <button class="nav-btn back-btn-nav" id="back-btn" style="display: none;">← Back</button>
+            <button class="nav-btn go-back-to-models-btn" id="go-back-models-btn" style="display: none;" onclick="window.location.href='index.html'">← Go back to models</button>
+            <button class="nav-btn continue-btn" id="next-btn">Continue →</button>
+        </div>
+    </div>
+
+    <!-- Menu Customization Modal -->
+    <div class="modal" id="menu-modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title-wrapper">
+                    <span class="modal-person-icon">👤</span>
+                    <h3 id="modal-guest-name">Adult 1's Menu</h3>
+                </div>
+                <button class="modal-close" id="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <!-- Guest Information Section -->
+                <div class="guest-info-section">
+                    <h4 class="section-title-small">Guest Information</h4>
+                    
+                    <div class="form-group-modal">
+                        <label for="guest-name-input">Name (Optional)</label>
+                        <input type="text" id="guest-name-input" placeholder="Enter guest name" class="modal-input">
+                    </div>
+                    
+                    <div class="form-group-modal">
+                        <label for="spice-level">Preferred Spice Level</label>
+                        <select id="spice-level" class="modal-select">
+                            <option value="mild">Mild</option>
+                            <option value="medium" selected>Medium</option>
+                            <option value="hot">Hot</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group-modal">
+                        <label>Dietary Preferences</label>
+                        <div class="dietary-checkboxes">
+                            <label class="checkbox-label-modal">
+                                <input type="checkbox" id="modal-vegetarian">
+                                <span>🌿 Vegetarian</span>
+                            </label>
+                            <label class="checkbox-label-modal">
+                                <input type="checkbox" id="modal-vegan">
+                                <span>🌱 Vegan</span>
+                            </label>
+                            <label class="checkbox-label-modal">
+                                <input type="checkbox" id="modal-gluten-free">
+                                <span>GF Gluten-Free</span>
+                            </label>
+                            <label class="checkbox-label-modal">
+                                <input type="checkbox" id="modal-halal">
+                                <span>Halal</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group-modal">
+                        <label for="special-needs">Special Needs or Allergies</label>
+                        <textarea id="special-needs" class="modal-textarea" placeholder="Any special dietary needs, allergies, or requirements. We will contact you to confirm." rows="3"></textarea>
+                        <small class="helper-text-modal">We will contact you to ensure we accommodate your needs perfectly.</small>
+                    </div>
+                    
+                    <div class="form-group-modal">
+                        <label for="dislikes">Things I Don't Like</label>
+                        <textarea id="dislikes" class="modal-textarea" placeholder="List any ingredients or dishes you don't like" rows="2"></textarea>
+                    </div>
+                </div>
+                
+                <!-- Menu Selection Section -->
+                <div class="menu-selection-section">
+                    <h4 class="section-title-small">Menu Selection</h4>
+                    
+                    <div class="dietary-filters-modal">
+                        <div class="filter-label">Filter by:</div>
+                        <div class="filter-buttons">
+                            <button type="button" class="filter-btn" data-filter="all">All</button>
+                            <button type="button" class="filter-btn active" data-filter="vegetarian">🌿 Vegetarian</button>
+                            <button type="button" class="filter-btn" data-filter="spicy">🌶️ Spicy</button>
+                            <button type="button" class="filter-btn" data-filter="seafood">🐟 Seafood</button>
+                        </div>
+                    </div>
+                    
+                    <div id="modal-menu-options">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn cancel-btn" id="modal-cancel">Cancel</button>
+                <button class="modal-btn save-btn" id="modal-save">Save Selection</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="model1-data.js"></script>
+    <script src="model1.js"></script>
+</body>
+</html>

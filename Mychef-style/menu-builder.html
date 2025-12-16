@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indonesian Menu Builder - Model 1</title>
+    <link rel="stylesheet" href="menu-builder.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <button class="back-btn" onclick="window.location.href='index.html'">← Back</button>
+            <h1>Indonesian Menu Builder</h1>
+            <div class="header-spacer"></div>
+        </header>
+
+        <!-- Step 1: Cuisine Selection (defaulted to Indonesian) -->
+        <section class="step-section" id="step1">
+            <h2>Choose Cuisine</h2>
+            <div class="cuisine-selector">
+                <button class="cuisine-btn active" data-cuisine="indonesian">
+                    <span class="cuisine-name">Indonesian</span>
+                    <span class="cuisine-desc">Traditional flavors & shared plates</span>
+                </button>
+                <button class="cuisine-btn" data-cuisine="italian" disabled>
+                    <span class="cuisine-name">Italian</span>
+                    <span class="cuisine-desc">Coming soon</span>
+                </button>
+                <button class="cuisine-btn" data-cuisine="bbq" disabled>
+                    <span class="cuisine-name">BBQ</span>
+                    <span class="cuisine-desc">Coming soon</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- Step 2: Course Size Selection -->
+        <section class="step-section" id="step2">
+            <h2>Choose Your Experience</h2>
+            <div class="course-selector">
+                <button class="course-btn" data-courses="3">
+                    <span class="course-count">3-Course</span>
+                    <span class="course-label">Simple</span>
+                    <span class="course-desc">Perfect for lighter dining</span>
+                </button>
+                <button class="course-btn active recommended" data-courses="4">
+                    <span class="course-count">4-Course</span>
+                    <span class="course-label">Recommended</span>
+                    <span class="course-desc">Balanced & complete</span>
+                    <span class="badge">⭐</span>
+                </button>
+                <button class="course-btn" data-courses="5">
+                    <span class="course-count">5-Course</span>
+                    <span class="course-label">Full Experience</span>
+                    <span class="course-desc">Premium tasting journey</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- Dietary Preferences -->
+        <section class="step-section" id="dietary">
+            <h3>Dietary Preferences</h3>
+            <div class="dietary-filters">
+                <label class="filter-checkbox">
+                    <input type="checkbox" id="vegetarian">
+                    <span>🌿 Vegetarian</span>
+                </label>
+                <label class="filter-checkbox">
+                    <input type="checkbox" id="gluten-free">
+                    <span>GF Gluten Free</span>
+                </label>
+                <label class="filter-checkbox">
+                    <input type="checkbox" id="no-pork">
+                    <span>No Pork</span>
+                </label>
+                <label class="filter-checkbox">
+                    <input type="checkbox" id="mild-spice">
+                    <span>Mild Spice</span>
+                </label>
+            </div>
+        </section>
+
+        <!-- Step 3: Suggested Menus (3 options) -->
+        <section class="step-section" id="step3" style="display: none;">
+            <h2>Our Suggested Menus</h2>
+            <p class="section-desc">Pick one of our curated menus, then customize if needed</p>
+            
+            <div class="suggested-menus">
+                <div class="menu-option" data-menu="A">
+                    <div class="menu-header">
+                        <h3>Menu A: Classic Crowd Pleaser</h3>
+                        <button class="select-menu-btn" data-menu="A">Select This Menu</button>
+                    </div>
+                    <div class="menu-preview" id="preview-A"></div>
+                </div>
+                
+                <div class="menu-option" data-menu="B">
+                    <div class="menu-header">
+                        <h3>Menu B: Premium Experience</h3>
+                        <button class="select-menu-btn" data-menu="B">Select This Menu</button>
+                    </div>
+                    <div class="menu-preview" id="preview-B"></div>
+                </div>
+                
+                <div class="menu-option" data-menu="C">
+                    <div class="menu-header">
+                        <h3>Menu C: Lighter & Healthier</h3>
+                        <button class="select-menu-btn" data-menu="C">Select This Menu</button>
+                    </div>
+                    <div class="menu-preview" id="preview-C"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Selected Menu Display -->
+        <section class="step-section" id="selected-menu-section" style="display: none;">
+            <div class="selected-menu-header">
+                <h2>Your Selected Menu</h2>
+                <button class="edit-menu-btn" id="edit-menu-btn">Edit Menu</button>
+            </div>
+            <div class="selected-menu-display" id="selected-menu-display"></div>
+        </section>
+
+        <!-- Step 4: Full Menu Card (for editing) -->
+        <section class="step-section" id="step4" style="display: none;">
+            <div class="menu-card-header">
+                <h2>Full Menu</h2>
+                <div class="menu-stats">
+                    <span id="selected-count">0 dishes selected</span>
+                    <span class="separator">•</span>
+                    <span id="course-selector-display">4-course</span>
+                </div>
+            </div>
+
+            <div class="menu-card" id="menu-card">
+                <!-- Menu items will be populated by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Sticky Bottom Bar -->
+        <div class="sticky-bar" id="sticky-bar" style="display: none;">
+            <div class="sticky-content">
+                <div class="sticky-info">
+                    <span id="sticky-count">0 dishes</span>
+                    <span class="sticky-price" id="sticky-price">$0</span>
+                </div>
+                <div class="sticky-actions">
+                    <button class="view-suggested-btn" id="view-suggested-btn">View Suggested Menu</button>
+                    <button class="book-btn" id="book-btn">Book Now</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 5: Booking Confirmation -->
+        <section class="step-section" id="step5" style="display: none;">
+            <h2>Confirm Your Booking</h2>
+            <div class="booking-summary" id="booking-summary"></div>
+            <div class="booking-form">
+                <h3>Your Details</h3>
+                <div class="form-group">
+                    <label>Number of Guests</label>
+                    <input type="number" id="guest-count" min="2" max="20" value="4">
+                </div>
+                <div class="form-group">
+                    <label>Date</label>
+                    <input type="date" id="booking-date" required>
+                </div>
+                <div class="form-group">
+                    <label>Time</label>
+                    <select id="booking-time" required>
+                        <option value="">Select time</option>
+                        <option value="18:00">6:00 PM</option>
+                        <option value="19:00">7:00 PM</option>
+                        <option value="20:00">8:00 PM</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Name</label>
+                    <input type="text" id="guest-name" required>
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="guest-email" required>
+                </div>
+                <div class="form-group">
+                    <label>Phone</label>
+                    <input type="tel" id="guest-phone" required>
+                </div>
+                
+                <div class="price-breakdown">
+                    <div class="price-row">
+                        <span>Menu Total</span>
+                        <span id="menu-total-price">$0</span>
+                    </div>
+                    <div class="price-row">
+                        <span>Deposit (30%)</span>
+                        <span id="deposit-amount">$0</span>
+                    </div>
+                    <div class="price-row total">
+                        <span>Pay Now</span>
+                        <span id="pay-now-amount">$0</span>
+                    </div>
+                </div>
+                
+                <button class="confirm-booking-btn" id="confirm-booking-btn">Pay Deposit & Confirm Booking</button>
+            </div>
+        </section>
+
+        <!-- Success Modal -->
+        <div class="modal" id="success-modal" style="display: none;">
+            <div class="modal-content">
+                <div class="success-icon">✓</div>
+                <h2>Booking Confirmed!</h2>
+                <p>Your deposit has been processed. You'll receive a confirmation email shortly.</p>
+                <button class="modal-btn" onclick="window.location.href='index.html'">Return Home</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="menu-data.js"></script>
+    <script src="menu-builder.js"></script>
+</body>
+</html>
+
