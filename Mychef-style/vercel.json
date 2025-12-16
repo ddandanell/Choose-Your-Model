@@ -1,10 +1,16 @@
 {
   "version": 2,
-  "buildCommand": null,
+  "buildCommand": "",
   "outputDirectory": ".",
   "framework": null,
-  "installCommand": null,
+  "installCommand": "",
   "cleanUrls": true,
   "trailingSlash": false,
-  "ignoreCommand": "exit 0"
+  "ignoreCommand": "exit 0",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/$1"
+    }
+  ]
 }
