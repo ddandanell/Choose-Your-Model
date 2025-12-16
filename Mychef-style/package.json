@@ -2,9 +2,6 @@
   "name": "mychef-style",
   "version": "1.0.0",
   "description": "Private Chef Booking System - Static Site",
-  "type": "module",
-  "scripts": {
-    "build": "echo 'Static site - no build needed'"
-  }
+  "private": true,
+  "scripts": {}
 }
-
