@@ -5,12 +5,5 @@
   "framework": null,
   "installCommand": "",
   "cleanUrls": true,
-  "trailingSlash": false,
-  "ignoreCommand": "exit 0",
-  "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": "/$1"
-    }
-  ]
+  "trailingSlash": false
 }
