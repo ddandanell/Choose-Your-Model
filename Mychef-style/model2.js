@@ -29,6 +29,7 @@ document.addEventListener('DOMContentLoaded', function() {
     renderCuisineCards();
     updateProgress();
     updateTotalGuests();
+    showSlide(1); // Initialize navigation buttons
 });
 
 // Date Picker
@@ -113,10 +114,8 @@ function calculateChefSchedule() {
     const diningDate = new Date(bookingData.date);
     diningDate.setHours(parseInt(hours), parseInt(minutes), 0, 0);
     
-    // Chef arrives: 2 hours (consultation + shopping) + cooking hours (3 or 4)
-    const cookingHours = bookingData.menuType === 'extended' ? 4 : 3;
-    const totalHours = 2 + cookingHours; // 2 hours consultation+shopping + cooking hours
-    const arrivalDate = new Date(diningDate.getTime() - (totalHours * 60 * 60 * 1000));
+    // Chef arrives 4 hours before dining time
+    const arrivalDate = new Date(diningDate.getTime() - (4 * 60 * 60 * 1000));
     
     const arrivalTime = formatTime(arrivalDate);
     bookingData.chefArrivalTime = arrivalTime;
@@ -127,15 +126,13 @@ function calculateChefSchedule() {
         const shoppingEnd = new Date(arrivalDate.getTime() + (2.5 * 60 * 60 * 1000)); // 30 min consultation + 2 hours shopping
         const cookingStart = shoppingEnd;
         
-        const cookingHours = bookingData.menuType === 'extended' ? 4 : 3;
-        const totalHours = 2 + cookingHours;
         document.getElementById('chef-schedule-info').innerHTML = `
             Your selected time: ${formatTimeDisplay(bookingData.diningTime)}<br>
-            Chef arrives approximately: ${formatTimeDisplay(arrivalTime)} (${totalHours} hours before)<br><br>
+            Chef arrives approximately: ${formatTimeDisplay(arrivalTime)} (4 hours before)<br><br>
             The chef will:<br>
-            • Arrive ${totalHours} hours before your dining time<br>
-            • Meet with you for consultation and go shopping (2 hours total)<br>
-            • Return and prepare your meal (${cookingHours} hours)<br>
+            • Arrive 4 hours before your dining time<br>
+            • Meet with you for consultation and go shopping<br>
+            • Return and prepare your meal<br>
             • Serve at your chosen dining time
         `;
     }
@@ -153,10 +150,11 @@ function updateTimeline() {
     const [arrivalHour, arrivalMin] = bookingData.chefArrivalTime.split(':');
     const arrival = parseInt(arrivalHour) * 60 + parseInt(arrivalMin);
     
-    const cookingHours = bookingData.menuType === 'extended' ? 4 : 3;
+    // Chef arrives 4 hours before, so we fit consultation, shopping, and cooking within 4 hours
+    // Timeline: 30 min consultation, 2 hours shopping, 1.5 hours cooking
     const consultationEnd = arrival + 30; // 30 minutes
-    const shoppingEnd = arrival + (2 * 60); // 30 min consultation + 1.5 hours shopping = 2 hours total
-    const cookingEnd = arrival + (2 * 60) + (cookingHours * 60); // 2 hours consultation+shopping + cooking hours
+    const shoppingEnd = arrival + (2.5 * 60); // 30 min consultation + 2 hours shopping = 2.5 hours total
+    const cookingEnd = arrival + (4 * 60); // Total 4 hours before dining
     
     const formatTimeFromMinutes = (mins) => {
         const h = Math.floor(mins / 60);
@@ -171,10 +169,10 @@ function updateTimeline() {
         document.getElementById('timeline-consultation').textContent = `${formatTimeFromMinutes(arrival)} - ${formatTimeFromMinutes(consultationEnd)}\nPersonal Consultation (20-30 min)`;
     }
     if (document.getElementById('timeline-shopping')) {
-        document.getElementById('timeline-shopping').textContent = `${formatTimeFromMinutes(consultationEnd)} - ${formatTimeFromMinutes(shoppingEnd)}\nConsultation & Grocery Shopping (2 hours total)`;
+        document.getElementById('timeline-shopping').textContent = `${formatTimeFromMinutes(consultationEnd)} - ${formatTimeFromMinutes(shoppingEnd)}\nGrocery Shopping (2 hours)`;
     }
     if (document.getElementById('timeline-cooking')) {
-        document.getElementById('timeline-cooking').textContent = `${formatTimeFromMinutes(shoppingEnd)} - ${formatTimeFromMinutes(cookingEnd)}\nCooking & Preparation (${cookingHours} hours)`;
+        document.getElementById('timeline-cooking').textContent = `${formatTimeFromMinutes(shoppingEnd)} - ${formatTimeFromMinutes(cookingEnd)}\nCooking & Preparation (1.5 hours)`;
     }
     if (document.getElementById('timeline-serving')) {
         document.getElementById('timeline-serving').textContent = `${formatTimeDisplay(bookingData.diningTime)} - Your Dining Experience`;
@@ -317,7 +315,7 @@ function showSlide(slideNumber) {
     document.getElementById('back-to-models').style.display = slideNumber === 1 ? 'flex' : 'none';
     
     if (slideNumber === totalSlides) {
-        document.getElementById('next-btn').textContent = 'Confirm Booking';
+        document.getElementById('next-btn').innerHTML = '<span>Confirm Booking</span><span class="btn-icon">→</span>';
     } else {
         document.getElementById('next-btn').innerHTML = '<span>Continue</span><span class="btn-icon">→</span>';
     }
@@ -454,10 +452,9 @@ function updateScheduleSummary() {
     }
 }
 
-// Chef Service Details - 2 hours consultation+shopping + 3 or 4 hours cooking
+// Chef Service Details - Fixed 4 hours total
 function updateChefServiceDetails() {
-    const cookingHours = bookingData.menuType === 'extended' ? 4 : 3;
-    const totalHours = 2 + cookingHours; // 2 hours consultation+shopping + cooking hours
+    const totalHours = 4; // Chef arrives 4 hours before dining
     const totalCost = totalHours * SERVICE_CONFIG.hourlyRate;
     
     const detailsEl = document.getElementById('chef-service-details');
@@ -471,8 +468,9 @@ function updateChefServiceDetails() {
         includesEl.innerHTML = `
             This covers:<br>
             • Chef's expertise and time<br>
-            • Consultation & shopping (2 hours)<br>
-            • Cooking (${cookingHours} hours)<br>
+            • Consultation (30 minutes)<br>
+            • Shopping (2 hours)<br>
+            • Cooking (1.5 hours)<br>
             • Equipment and tools<br>
             • Kitchen cleanup
         `;
@@ -511,9 +509,8 @@ function updatePricingSummary() {
     const container = document.getElementById('pricing-breakdown');
     if (!container) return;
     
-    // 2 hours consultation+shopping + 3 or 4 hours cooking
-    const cookingHours = bookingData.menuType === 'extended' ? 4 : 3;
-    const totalHours = 2 + cookingHours;
+    // Fixed 4 hours total
+    const totalHours = 4;
     const chefServiceCost = totalHours * SERVICE_CONFIG.hourlyRate;
     
     // Calculate paying guests for ingredients
@@ -537,8 +534,9 @@ function updatePricingSummary() {
             <p>${totalHours} × Rp ${SERVICE_CONFIG.hourlyRate.toLocaleString('id-ID')} = <strong>Rp ${chefServiceCost.toLocaleString('id-ID')}</strong></p>
             <p style="margin-top: 15px;">Includes:</p>
             <ul style="margin-left: 20px; margin-top: 8px;">
-                <li>Consultation & shopping (2 hours)</li>
-                <li>Cooking & preparation (${cookingHours} hours)</li>
+                <li>Consultation (30 minutes)</li>
+                <li>Shopping (2 hours)</li>
+                <li>Cooking & preparation (1.5 hours)</li>
                 <li>Equipment and tools</li>
                 <li>Kitchen cleanup</li>
             </ul>

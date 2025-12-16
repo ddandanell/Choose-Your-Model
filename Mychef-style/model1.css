@@ -196,6 +196,32 @@ body {
     letter-spacing: 0.5px;
 }
 
+.form-input {
+    width: 100%;
+    padding: 15px 20px;
+    border: 2px solid #e5e0d8;
+    border-radius: 12px;
+    background: #ffffff;
+    color: #3d2817;
+    font-size: 1rem;
+    font-family: inherit;
+    transition: all 0.3s ease;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #8b6f47;
+    box-shadow: 0 0 0 3px rgba(139, 111, 71, 0.1);
+}
+
+.helper-text {
+    display: block;
+    margin-top: 8px;
+    font-size: 0.85rem;
+    color: #6b5d4a;
+    font-style: italic;
+}
+
 /* Date Input */
 .date-input-wrapper {
     position: relative;
@@ -342,6 +368,9 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    min-width: 44px; /* Touch target minimum */
+    min-height: 44px; /* Touch target minimum */
+    -webkit-tap-highlight-color: transparent;
 }
 
 .qty-btn:hover {
@@ -1499,33 +1528,383 @@ body {
 }
 
 @media (max-width: 768px) {
-    .progress-header,
-    .progress-steps,
-    .navigation {
-        padding: 15px 20px;
+    .progress-header {
+        padding: 12px 15px;
+        flex-direction: column;
+        gap: 8px;
+        align-items: flex-start;
+    }
+    
+    .step-counter,
+    .step-label {
+        font-size: 0.8rem;
+    }
+    
+    .progress-steps {
+        padding: 15px 10px;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .step-indicator {
+        min-width: 60px;
+    }
+    
+    .step-name {
+        font-size: 0.6rem;
+        white-space: nowrap;
+    }
+    
+    .step-circle {
+        width: 20px;
+        height: 20px;
+    }
+    
+    .step-indicator.active .step-circle {
+        width: 24px;
+        height: 24px;
     }
     
     .slides-container {
-        padding: 30px 20px;
+        padding: 20px 15px;
     }
     
     .slide-content {
-        padding: 30px 20px;
+        padding: 25px 15px;
+        border-radius: 12px;
     }
     
     .slide-title {
+        font-size: 1.6rem;
+        line-height: 1.3;
+        margin-bottom: 10px;
+    }
+    
+    .slide-subtitle {
+        font-size: 0.95rem;
+        margin-bottom: 25px;
+    }
+    
+    .form-group {
+        margin-bottom: 20px;
+    }
+    
+    .form-group label {
+        font-size: 0.8rem;
+    }
+    
+    .date-input-wrapper,
+    .time-input-wrapper {
+        padding: 12px 15px;
+    }
+    
+    .date-icon,
+    .time-icon {
+        font-size: 1.2rem;
+        margin-right: 10px;
+    }
+    
+    .date-display {
+        font-size: 0.95rem;
+    }
+    
+    .guests-section {
+        margin-bottom: 25px;
+    }
+    
+    .guest-category {
+        padding: 20px 15px;
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .category-icon {
         font-size: 2rem;
+    }
+    
+    .category-title {
+        font-size: 1.1rem;
+    }
+    
+    .category-subtitle {
+        font-size: 0.85rem;
+    }
+    
+    .quantity-selector {
+        gap: 12px;
+    }
+    
+    .qty-btn {
+        width: 36px;
+        height: 36px;
+        font-size: 1.3rem;
+    }
+    
+    .qty-value {
+        font-size: 1.3rem;
+        min-width: 35px;
     }
     
     .time-slots-grid {
         grid-template-columns: 1fr;
+        gap: 12px;
+    }
+    
+    .time-slot {
+        padding: 15px;
+        font-size: 0.95rem;
+    }
+    
+    .cuisine-cards {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .cuisine-card {
+        padding: 20px;
+    }
+    
+    .cuisine-name {
+        font-size: 1.3rem;
+    }
+    
+    .course-cards {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .course-card {
+        padding: 20px 15px;
+    }
+    
+    .course-title {
+        font-size: 1.2rem;
+    }
+    
+    .tier-cards {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .tier-card {
+        padding: 20px 15px;
+    }
+    
+    .tier-name {
+        font-size: 1.2rem;
+    }
+    
+    .tier-price {
+        font-size: 1.1rem;
+    }
+    
+    .guest-menu-item {
+        flex-direction: column;
+        gap: 15px;
+        padding: 20px 15px;
+    }
+    
+    .guest-menu-name {
+        font-size: 1rem;
+    }
+    
+    .guest-menu-preview {
+        font-size: 0.85rem;
+    }
+    
+    .customize-menu-btn {
+        width: 100%;
+        padding: 12px;
+    }
+    
+    .summary-layout {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .summary-card {
+        padding: 20px 15px;
+    }
+    
+    .summary-card-header h3 {
+        font-size: 1.1rem;
+    }
+    
+    .summary-item {
+        font-size: 0.9rem;
+        padding: 10px 0;
+    }
+    
+    .navigation {
+        padding: 15px;
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .nav-btn {
+        width: 100%;
+        padding: 14px;
+        font-size: 0.95rem;
+    }
+    
+    .go-back-to-models-btn {
+        order: -1;
+    }
+    
+    /* Modal Mobile */
+    .modal-content {
+        width: 95%;
+        max-width: 95%;
+        margin: 10px;
+        max-height: 90vh;
+    }
+    
+    .modal-header {
+        padding: 15px;
+    }
+    
+    .modal-title-wrapper h3 {
+        font-size: 1.2rem;
+    }
+    
+    .modal-body {
+        padding: 20px 15px;
+        max-height: calc(90vh - 150px);
+    }
+    
+    .form-group-modal {
+        margin-bottom: 15px;
+    }
+    
+    .dietary-checkboxes {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .checkbox-label-modal {
+        width: 100%;
+    }
+    
+    .dietary-filters-modal {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .filter-buttons {
+        flex-wrap: wrap;
+    }
+    
+    .filter-btn {
+        flex: 1;
+        min-width: calc(50% - 6px);
+        font-size: 0.85rem;
+        padding: 10px 12px;
+    }
+    
+    .menu-category {
+        margin-bottom: 20px;
+    }
+    
+    .menu-dropdown-btn {
+        padding: 12px 15px;
+        font-size: 0.9rem;
+    }
+    
+    .menu-option {
+        padding: 12px 15px;
+    }
+    
+    .menu-option-name {
+        font-size: 0.9rem;
+    }
+    
+    .modal-footer {
+        padding: 15px;
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .modal-btn {
+        width: 100%;
+        padding: 12px;
+    }
+    
+    .info-banner {
+        padding: 15px;
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .info-icon {
+        font-size: 1.3rem;
+    }
+    
+    .info-text {
+        font-size: 0.9rem;
     }
     
     .children-ages {
         grid-template-columns: 1fr;
     }
     
+    .service-info-box {
+        padding: 15px;
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .service-icon {
+        font-size: 1.5rem;
+    }
+    
+    .total-guests-display {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+        padding: 15px;
+    }
+    
+    .total-label {
+        font-size: 1rem;
+    }
+    
+    .total-value {
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .slide-title {
+        font-size: 1.4rem;
+    }
+    
+    .slide-subtitle {
+        font-size: 0.9rem;
+    }
+    
+    .progress-steps {
+        padding: 10px 5px;
+    }
+    
     .step-name {
-        font-size: 0.65rem;
+        font-size: 0.55rem;
+    }
+    
+    .slides-container {
+        padding: 15px 10px;
+    }
+    
+    .slide-content {
+        padding: 20px 12px;
+    }
+    
+    .qty-btn {
+        width: 32px;
+        height: 32px;
+        font-size: 1.2rem;
+    }
+    
+    .qty-value {
+        font-size: 1.2rem;
     }
 }

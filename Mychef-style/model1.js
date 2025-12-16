@@ -1,5 +1,10 @@
 // Global state
 let bookingData = {
+    customerInfo: {
+        name: '',
+        phone: '',
+        email: ''
+    },
     date: null,
     serviceType: 'dinner',
     adults: 4,
@@ -16,9 +21,9 @@ let bookingData = {
 };
 
 let currentSlide = 1;
-const totalSlides = 8;
+const totalSlides = 9;
 
-const stepLabels = ['Date', 'Guests', 'Time', 'Cuisine', 'Courses', 'Price Tier', 'Menu', 'Summary'];
+const stepLabels = ['Contact', 'Date', 'Guests', 'Time', 'Cuisine', 'Courses', 'Price Tier', 'Menu', 'Summary'];
 
 // Initialize
 document.addEventListener('DOMContentLoaded', function() {
@@ -27,6 +32,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeTimeSlots();
     updateProgress();
     updateTotalGuests();
+    showSlide(1); // Initialize navigation buttons
 });
 
 function initializeDatePicker() {
@@ -663,9 +669,13 @@ function nextSlide() {
             // Special handling
             if (currentSlide === 6) {
                 updateTierOptions();
-            } else if (currentSlide === 7) {
-                renderGuestsMenuList();
             } else if (currentSlide === 8) {
+                // Initialize guest menus if not already done
+                if (bookingData.guestMenus.length === 0) {
+                    initializeGuestMenus();
+                }
+                renderGuestsMenuList();
+            } else if (currentSlide === 9) {
                 renderSummary();
             }
         }
@@ -695,6 +705,15 @@ function showSlide(slideNumber) {
     // Update step label
     document.getElementById('step-label').textContent = stepLabels[slideNumber - 1];
     
+    // Special handling when showing menu customization slide
+    if (slideNumber === 8) {
+        // Initialize guest menus if not already done
+        if (bookingData.guestMenus.length === 0) {
+            initializeGuestMenus();
+        }
+        renderGuestsMenuList();
+    }
+    
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
@@ -723,25 +742,49 @@ function updateProgress() {
 function validateCurrentSlide() {
     switch(currentSlide) {
         case 1:
+            const name = document.getElementById('customer-name').value.trim();
+            const phone = document.getElementById('customer-phone').value.trim();
+            const email = document.getElementById('customer-email').value.trim();
+            
+            if (!name || name.length < 2) {
+                alert('Please enter a valid name (at least 2 characters)');
+                return false;
+            }
+            
+            if (!phone || phone.length < 5) {
+                alert('Please enter a valid phone number');
+                return false;
+            }
+            
+            if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                alert('Please enter a valid email address');
+                return false;
+            }
+            
+            bookingData.customerInfo.name = name;
+            bookingData.customerInfo.phone = phone;
+            bookingData.customerInfo.email = email;
+            return true;
+        case 2:
             if (!bookingData.date) {
                 alert('Please select a date');
                 return false;
             }
             return true;
-        case 2:
+        case 3:
             if (bookingData.adults < 1) {
                 alert('At least 1 adult is required');
                 return false;
             }
             return true;
-        case 5:
+        case 6:
             const minimum = pricingMatrix[bookingData.courseCount].minimum;
             if (bookingData.adults < minimum) {
                 alert(`Minimum ${minimum} adults required for ${bookingData.courseCount}-course selection`);
                 return false;
             }
             return true;
-        case 6:
+        case 7:
             if (!bookingData.priceTier) {
                 alert('Please select a price tier');
                 return false;

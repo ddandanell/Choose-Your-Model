@@ -10,50 +10,79 @@
     <div class="booking-container">
         <!-- Progress Header -->
         <header class="progress-header">
-            <div class="step-counter">Step <span id="current-slide">1</span> of <span id="total-slides">8</span></div>
-            <div class="step-label" id="step-label">Date</div>
+            <div class="step-counter">Step <span id="current-slide">1</span> of <span id="total-slides">9</span></div>
+            <div class="step-label" id="step-label">Contact</div>
         </header>
 
         <!-- Progress Bar with Step Indicators -->
         <div class="progress-steps">
             <div class="step-indicator" data-step="1">
                 <div class="step-circle" id="step-circle-1"></div>
-                <span class="step-name">Date</span>
+                <span class="step-name">Contact</span>
             </div>
             <div class="step-indicator" data-step="2">
                 <div class="step-circle" id="step-circle-2"></div>
-                <span class="step-name">Guests</span>
+                <span class="step-name">Date</span>
             </div>
             <div class="step-indicator" data-step="3">
                 <div class="step-circle" id="step-circle-3"></div>
-                <span class="step-name">Time</span>
+                <span class="step-name">Guests</span>
             </div>
             <div class="step-indicator" data-step="4">
                 <div class="step-circle" id="step-circle-4"></div>
-                <span class="step-name">Cuisine</span>
+                <span class="step-name">Time</span>
             </div>
             <div class="step-indicator" data-step="5">
                 <div class="step-circle" id="step-circle-5"></div>
-                <span class="step-name">Courses</span>
+                <span class="step-name">Cuisine</span>
             </div>
             <div class="step-indicator" data-step="6">
                 <div class="step-circle" id="step-circle-6"></div>
-                <span class="step-name">Price Tier</span>
+                <span class="step-name">Courses</span>
             </div>
             <div class="step-indicator" data-step="7">
                 <div class="step-circle" id="step-circle-7"></div>
-                <span class="step-name">Menu</span>
+                <span class="step-name">Price Tier</span>
             </div>
             <div class="step-indicator" data-step="8">
                 <div class="step-circle" id="step-circle-8"></div>
+                <span class="step-name">Menu</span>
+            </div>
+            <div class="step-indicator" data-step="9">
+                <div class="step-circle" id="step-circle-9"></div>
                 <span class="step-name">Summary</span>
             </div>
         </div>
 
         <!-- Slide Container -->
         <div class="slides-container">
-            <!-- SLIDE 1: Date & Service -->
+            <!-- SLIDE 1: Contact Information -->
             <div class="slide active" data-slide="1">
+                <div class="slide-content">
+                    <h1 class="slide-title">Welcome to Our Private Chef Service</h1>
+                    <p class="slide-subtitle">Please provide your contact information</p>
+                    
+                    <div class="form-group">
+                        <label for="customer-name">Full Name *</label>
+                        <input type="text" id="customer-name" class="form-input" placeholder="Enter your full name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="customer-phone">Phone Number *</label>
+                        <input type="tel" id="customer-phone" class="form-input" placeholder="Enter your phone number" required>
+                        <small class="helper-text">We'll use this for booking confirmations</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="customer-email">Email Address *</label>
+                        <input type="email" id="customer-email" class="form-input" placeholder="your.email@example.com" required>
+                        <small class="helper-text">Receipt and booking details will be sent here</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 2: Date & Service -->
+            <div class="slide" data-slide="2">
                 <div class="slide-content">
                     <h1 class="slide-title">When would you like your chef to visit?</h1>
                     <p class="slide-subtitle">Choose a date for your private dining experience.</p>
@@ -81,8 +110,8 @@
                 </div>
             </div>
 
-            <!-- SLIDE 2: Guest Count & Dietary -->
-            <div class="slide" data-slide="2">
+            <!-- SLIDE 3: Guest Count & Dietary -->
+            <div class="slide" data-slide="3">
                 <div class="slide-content">
                     <h1 class="slide-title">How many guests are joining?</h1>
                     <p class="slide-subtitle">Tell us about your party size</p>
@@ -148,8 +177,8 @@
                 </div>
             </div>
 
-            <!-- SLIDE 3: Dining Time -->
-            <div class="slide" data-slide="3">
+            <!-- SLIDE 4: Dining Time -->
+            <div class="slide" data-slide="4">
                 <div class="slide-content">
                     <h1 class="slide-title">What time would you like to dine?</h1>
                     <p class="slide-subtitle">This is when you'd like to start eating, not when the chef arrives</p>
@@ -170,8 +199,8 @@
                 </div>
             </div>
 
-            <!-- SLIDE 4: Cuisine Selection -->
-            <div class="slide" data-slide="4">
+            <!-- SLIDE 5: Cuisine Selection -->
+            <div class="slide" data-slide="5">
                 <div class="slide-content">
                     <h1 class="slide-title">Choose Your Cuisine</h1>
                     <p class="slide-subtitle">Select the culinary tradition for your dinner</p>
@@ -252,8 +281,8 @@
                 </div>
             </div>
 
-            <!-- SLIDE 5: Course Selection -->
-            <div class="slide" data-slide="5">
+            <!-- SLIDE 6: Course Selection -->
+            <div class="slide" data-slide="6">
                 <div class="slide-content">
                     <h1 class="slide-title">How many courses would you like?</h1>
                     <p class="slide-subtitle">Each option offers a different dining experience</p>
@@ -303,8 +332,8 @@
                 </div>
             </div>
 
-            <!-- SLIDE 6: Price Tier -->
-            <div class="slide" data-slide="6">
+            <!-- SLIDE 7: Price Tier -->
+            <div class="slide" data-slide="7">
                 <div class="slide-content">
                     <h1 class="slide-title">Select Your Experience Level</h1>
                     <p class="slide-subtitle">Choose the quality tier that matches your occasion</p>
@@ -315,8 +344,8 @@
                 </div>
             </div>
 
-            <!-- SLIDE 7: Menu Customization -->
-            <div class="slide" data-slide="7">
+            <!-- SLIDE 8: Menu Customization -->
+            <div class="slide" data-slide="8">
                 <div class="slide-content">
                     <h1 class="slide-title">Customize Your Menus</h1>
                     <p class="slide-subtitle">Personalize each guest's menu selection</p>
@@ -327,8 +356,8 @@
                 </div>
             </div>
 
-            <!-- SLIDE 8: Order Summary -->
-            <div class="slide" data-slide="8">
+            <!-- SLIDE 9: Order Summary -->
+            <div class="slide" data-slide="9">
                 <div class="slide-content summary-content">
                     <h1 class="slide-title">Your Booking Summary</h1>
                     <p class="slide-subtitle">Review your private chef experience details</p>
@@ -431,7 +460,7 @@
         <!-- Navigation -->
         <div class="navigation">
             <button class="nav-btn back-btn-nav" id="back-btn" style="display: none;">← Back</button>
-            <button class="nav-btn go-back-to-models-btn" id="go-back-models-btn" style="display: none;" onclick="window.location.href='index.html'">← Go back to models</button>
+            <button class="nav-btn go-back-to-models-btn" id="go-back-models-btn" style="display: block;" onclick="window.location.href='index.html'">← Back to Models</button>
             <button class="nav-btn continue-btn" id="next-btn">Continue →</button>
         </div>
     </div>
