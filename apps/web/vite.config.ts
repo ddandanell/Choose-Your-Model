@@ -78,6 +78,16 @@ export default defineConfig({
     dedupe: ['react', 'react-dom'],
   },
   clearScreen: false,
+  build: {
+    target: ['es2022', 'chrome89', 'edge89', 'firefox89', 'safari15'],
+    minify: 'esbuild',
+  },
+  esbuild: {
+    target: 'es2022',
+    supported: {
+      'top-level-await': true,
+    },
+  },
   server: {
     allowedHosts: true,
     host: '0.0.0.0',
