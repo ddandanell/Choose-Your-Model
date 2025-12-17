@@ -19,7 +19,33 @@ type Tree = {
 };
 
 function buildRouteTree(dir: string, basePath = ''): Tree {
-	const files = readdirSync(dir);
+	// Skip API directory - API routes are handled separately by the server adapter
+	if (basePath === 'api' || basePath.startsWith('api/')) {
+		return {
+			path: basePath,
+			children: [],
+			hasPage: false,
+			isParam: false,
+			isCatchAll: false,
+			paramName: '',
+		};
+	}
+
+	let files: string[];
+	try {
+		files = readdirSync(dir);
+	} catch (error) {
+		// Directory doesn't exist, return empty node
+		return {
+			path: basePath,
+			children: [],
+			hasPage: false,
+			isParam: false,
+			isCatchAll: false,
+			paramName: '',
+		};
+	}
+
 	const node: Tree = {
 		path: basePath,
 		children: [],
@@ -45,8 +71,19 @@ function buildRouteTree(dir: string, basePath = ''): Tree {
 	}
 
 	for (const file of files) {
+		// Skip API directory
+		if (file === 'api') {
+			continue;
+		}
+
 		const filePath = join(dir, file);
-		const stat = statSync(filePath);
+		let stat;
+		try {
+			stat = statSync(filePath);
+		} catch (error) {
+			// File/directory doesn't exist, skip it
+			continue;
+		}
 
 		if (stat.isDirectory()) {
 			const childPath = basePath ? `${basePath}/${file}` : file;

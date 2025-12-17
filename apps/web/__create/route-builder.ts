@@ -16,7 +16,20 @@ if (globalThis.fetch) {
 
 // Recursively find all route.js files
 async function findRouteFiles(dir: string): Promise<string[]> {
-  const files = await readdir(dir);
+  let files: string[];
+  try {
+    files = await readdir(dir);
+  } catch (error: any) {
+    // Directory doesn't exist (ENOENT) or other error - return empty array
+    if (error?.code === 'ENOENT') {
+      // Directory doesn't exist, which is fine - just return empty routes
+      return [];
+    }
+    // For other errors, log and return empty array
+    console.error(`Error reading directory ${dir}:`, error);
+    return [];
+  }
+
   let routes: string[] = [];
 
   for (const file of files) {
@@ -66,8 +79,11 @@ function getHonoPath(routeFile: string): { name: string; pattern: string }[] {
 // Import and register all routes
 async function registerRoutes() {
   const routeFiles = (
-    await findRouteFiles(__dirname).catch((error) => {
-      console.error('Error finding route files:', error);
+    await findRouteFiles(__dirname).catch((error: any) => {
+      // ENOENT means directory doesn't exist, which is fine
+      if (error?.code !== 'ENOENT') {
+        console.error('Error finding route files:', error);
+      }
       return [];
     })
   )
