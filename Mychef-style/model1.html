@@ -10,79 +10,53 @@
     <div class="booking-container">
         <!-- Progress Header -->
         <header class="progress-header">
-            <div class="step-counter">Step <span id="current-slide">1</span> of <span id="total-slides">9</span></div>
-            <div class="step-label" id="step-label">Contact</div>
+            <div class="workflow-label">This is the workflow of model1</div>
+            <div class="header-right">
+                <div class="step-counter">Step <span id="current-slide">1</span> of <span id="total-slides">8</span></div>
+                <div class="step-label" id="step-label">Date</div>
+            </div>
         </header>
 
         <!-- Progress Bar with Step Indicators -->
         <div class="progress-steps">
             <div class="step-indicator" data-step="1">
                 <div class="step-circle" id="step-circle-1"></div>
-                <span class="step-name">Contact</span>
+                <span class="step-name">Date</span>
             </div>
             <div class="step-indicator" data-step="2">
                 <div class="step-circle" id="step-circle-2"></div>
-                <span class="step-name">Date</span>
+                <span class="step-name">Guests</span>
             </div>
             <div class="step-indicator" data-step="3">
                 <div class="step-circle" id="step-circle-3"></div>
-                <span class="step-name">Guests</span>
+                <span class="step-name">Time</span>
             </div>
             <div class="step-indicator" data-step="4">
                 <div class="step-circle" id="step-circle-4"></div>
-                <span class="step-name">Time</span>
+                <span class="step-name">Cuisine</span>
             </div>
             <div class="step-indicator" data-step="5">
                 <div class="step-circle" id="step-circle-5"></div>
-                <span class="step-name">Cuisine</span>
+                <span class="step-name">Courses</span>
             </div>
             <div class="step-indicator" data-step="6">
                 <div class="step-circle" id="step-circle-6"></div>
-                <span class="step-name">Courses</span>
+                <span class="step-name">Price Tier</span>
             </div>
             <div class="step-indicator" data-step="7">
                 <div class="step-circle" id="step-circle-7"></div>
-                <span class="step-name">Price Tier</span>
+                <span class="step-name">Menu</span>
             </div>
             <div class="step-indicator" data-step="8">
                 <div class="step-circle" id="step-circle-8"></div>
-                <span class="step-name">Menu</span>
-            </div>
-            <div class="step-indicator" data-step="9">
-                <div class="step-circle" id="step-circle-9"></div>
                 <span class="step-name">Summary</span>
             </div>
         </div>
 
         <!-- Slide Container -->
         <div class="slides-container">
-            <!-- SLIDE 1: Contact Information -->
+            <!-- SLIDE 1: Date & Service -->
             <div class="slide active" data-slide="1">
-                <div class="slide-content">
-                    <h1 class="slide-title">Welcome to Our Private Chef Service</h1>
-                    <p class="slide-subtitle">Please provide your contact information</p>
-                    
-                    <div class="form-group">
-                        <label for="customer-name">Full Name *</label>
-                        <input type="text" id="customer-name" class="form-input" placeholder="Enter your full name" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="customer-phone">Phone Number *</label>
-                        <input type="tel" id="customer-phone" class="form-input" placeholder="Enter your phone number" required>
-                        <small class="helper-text">We'll use this for booking confirmations</small>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="customer-email">Email Address *</label>
-                        <input type="email" id="customer-email" class="form-input" placeholder="your.email@example.com" required>
-                        <small class="helper-text">Receipt and booking details will be sent here</small>
-                    </div>
-                </div>
-            </div>
-
-            <!-- SLIDE 2: Date & Service -->
-            <div class="slide" data-slide="2">
                 <div class="slide-content">
                     <h1 class="slide-title">When would you like your chef to visit?</h1>
                     <p class="slide-subtitle">Choose a date for your private dining experience.</p>
@@ -110,8 +84,8 @@
                 </div>
             </div>
 
-            <!-- SLIDE 3: Guest Count & Dietary -->
-            <div class="slide" data-slide="3">
+            <!-- SLIDE 2: Guest Count & Dietary -->
+            <div class="slide" data-slide="2">
                 <div class="slide-content">
                     <h1 class="slide-title">How many guests are joining?</h1>
                     <p class="slide-subtitle">Tell us about your party size</p>
@@ -177,8 +151,8 @@
                 </div>
             </div>
 
-            <!-- SLIDE 4: Dining Time -->
-            <div class="slide" data-slide="4">
+            <!-- SLIDE 3: Dining Time -->
+            <div class="slide" data-slide="3">
                 <div class="slide-content">
                     <h1 class="slide-title">What time would you like to dine?</h1>
                     <p class="slide-subtitle">This is when you'd like to start eating, not when the chef arrives</p>
@@ -199,11 +173,20 @@
                 </div>
             </div>
 
-            <!-- SLIDE 5: Cuisine Selection -->
-            <div class="slide" data-slide="5">
+            <!-- SLIDE 4: Cuisine Selection -->
+            <div class="slide" data-slide="4">
                 <div class="slide-content">
                     <h1 class="slide-title">Choose Your Cuisine</h1>
-                    <p class="slide-subtitle">Select the culinary tradition for your dinner</p>
+                    <p class="slide-subtitle">You choose what kind of dishes there will be. You need to choose one. You cannot mix it through.</p>
+                    
+                    <div class="info-banner" style="margin-bottom: 25px;">
+                        <div class="info-icon">👨‍🍳</div>
+                        <div class="info-content">
+                            <div class="info-text">
+                                When you choose a cuisine, you get a perfect chef - an expert in that specific cuisine. This is what the menu is that you can choose from. Each cuisine has its own specialized chef with years of experience in that culinary tradition.
+                            </div>
+                        </div>
+                    </div>
                     
                     <div class="cuisine-cards">
                         <div class="cuisine-card active" data-cuisine="indonesian">
@@ -212,8 +195,8 @@
                                 <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=800&h=600&fit=crop&q=80" alt="Indonesian food" />
                             </div>
                             <div class="cuisine-name">Indonesian</div>
-                            <div class="cuisine-desc">Authentic flavors from across the archipelago</div>
-                            <div class="cuisine-note">This is the only one we have created, just an example.</div>
+                            <div class="cuisine-desc">Expert chef specialized in Indonesian cuisine</div>
+                            <div class="cuisine-note" style="color: #8b6f47; font-weight: 600; margin-top: 8px;">Right now it's just a test, so you can only see the Indonesian one.</div>
                             <div class="cuisine-tags">
                                 <span class="cuisine-tag">Rendang</span>
                                 <span class="cuisine-tag">Satay</span>
@@ -276,16 +259,25 @@
                     
                     <div class="coming-soon-banner">
                         <div class="banner-icon">🍴</div>
-                        <div class="banner-text">More cuisines coming soon! We're expanding our chef network to bring you Japanese, Italian, and French dining experiences.</div>
+                        <div class="banner-text">More cuisines coming soon! Each will have its own expert chef specialized in that cuisine. Right now this is just a test, so only Indonesian is available.</div>
                     </div>
                 </div>
             </div>
 
-            <!-- SLIDE 6: Course Selection -->
-            <div class="slide" data-slide="6">
+            <!-- SLIDE 5: Course Selection -->
+            <div class="slide" data-slide="5">
                 <div class="slide-content">
                     <h1 class="slide-title">How many courses would you like?</h1>
-                    <p class="slide-subtitle">Each option offers a different dining experience</p>
+                    <p class="slide-subtitle">Each option offers a different dining experience. In the next step, you can customize the menus, but we will come with suggestions for each course.</p>
+                    
+                    <div class="info-banner" style="margin-bottom: 25px;">
+                        <div class="info-icon">💡</div>
+                        <div class="info-content">
+                            <div class="info-text">
+                                <strong>Menu Customization:</strong> After selecting your course count, you'll be able to customize each guest's menu in the next step. We'll provide suggestions for each course, but you can personalize them based on preferences, dietary needs, and allergies.
+                            </div>
+                        </div>
+                    </div>
                     
                     <div class="course-cards">
                         <div class="course-card" data-courses="3">
@@ -293,7 +285,14 @@
                                 <div class="course-title">3-Course (Simple)</div>
                                 <div class="course-count">3 courses</div>
                             </div>
-                            <div class="course-desc">A refined dining experience with starters, main, and dessert</div>
+                            <div class="course-desc">
+                                <strong>Perfect for:</strong> A refined, elegant dining experience<br><br>
+                                <strong>Includes:</strong><br>
+                                • Starter (appetizer)<br>
+                                • Main course<br>
+                                • Dessert<br><br>
+                                A balanced meal with carefully selected dishes that showcase the cuisine's highlights. Great for those who prefer a simpler, more focused dining experience.
+                            </div>
                             <div class="course-requirement">
                                 <span class="req-icon">👥</span>
                                 <span>Minimum 4 adults required</span>
@@ -309,7 +308,15 @@
                                 <div class="course-title">4-Course</div>
                                 <div class="course-count">4 courses</div>
                             </div>
-                            <div class="course-desc">Our most popular choice with small bites, starters, main, and dessert</div>
+                            <div class="course-desc">
+                                <strong>Perfect for:</strong> Our most popular choice - a complete dining journey<br><br>
+                                <strong>Includes:</strong><br>
+                                • Small bites (welcome appetizers)<br>
+                                • Starter (appetizer)<br>
+                                • Main course<br>
+                                • Dessert<br><br>
+                                The ideal balance between variety and portion size. Includes small welcome bites to start, followed by a full progression through starter, main, and dessert. Most guests find this the perfect amount of food.
+                            </div>
                             <div class="course-requirement">
                                 <span class="req-icon">👥</span>
                                 <span>Minimum 4 adults required</span>
@@ -321,7 +328,16 @@
                                 <div class="course-title">5-Course (Full Experience)</div>
                                 <div class="course-count">5 courses</div>
                             </div>
-                            <div class="course-desc">The complete culinary journey with all courses</div>
+                            <div class="course-desc">
+                                <strong>Perfect for:</strong> Special occasions and food enthusiasts<br><br>
+                                <strong>Includes:</strong><br>
+                                • Small bites (welcome appetizers)<br>
+                                • Starter (appetizer)<br>
+                                • Pre-main course (intermezzo)<br>
+                                • Main course<br>
+                                • Dessert<br><br>
+                                The complete culinary journey with all courses. Includes an additional pre-main course (intermezzo) to cleanse the palate between starter and main. Perfect for celebrations, special occasions, or those who want to experience the full range of the cuisine.
+                            </div>
                             <div class="course-requirement">
                                 <span class="req-icon">👥</span>
                                 <span>Minimum 6 adults required</span>
@@ -332,11 +348,20 @@
                 </div>
             </div>
 
-            <!-- SLIDE 7: Price Tier -->
-            <div class="slide" data-slide="7">
+            <!-- SLIDE 6: Price Tier -->
+            <div class="slide" data-slide="6">
                 <div class="slide-content">
                     <h1 class="slide-title">Select Your Experience Level</h1>
-                    <p class="slide-subtitle">Choose the quality tier that matches your occasion</p>
+                    <p class="slide-subtitle">This selection determines your budget and the quality of ingredients. Choose the tier that matches your occasion and preferences.</p>
+                    
+                    <div class="info-banner" style="margin-bottom: 25px;">
+                        <div class="info-icon">💰</div>
+                        <div class="info-content">
+                            <div class="info-text">
+                                <strong>Price Tiers:</strong> The cost reflects ingredient quality. Standard = quality local ingredients. Premium = superior-grade ingredients. Luxury = finest ingredients (best meats, premium seafood, artisanal products).
+                            </div>
+                        </div>
+                    </div>
                     
                     <div class="tier-cards" id="tier-cards">
                         <!-- Populated by JavaScript -->
@@ -344,11 +369,11 @@
                 </div>
             </div>
 
-            <!-- SLIDE 8: Menu Customization -->
-            <div class="slide" data-slide="8">
+            <!-- SLIDE 7: Menu Customization -->
+            <div class="slide" data-slide="7">
                 <div class="slide-content">
                     <h1 class="slide-title">Customize Your Menus</h1>
-                    <p class="slide-subtitle">Personalize each guest's menu selection</p>
+                    <p class="slide-subtitle">Personalize each guest's menu selection. Add names and preferences to customize special spices, allergies, dietary needs (vegetarian, vegan, etc.) for each guest.</p>
                     
                     <div class="guests-menu-list" id="guests-menu-list">
                         <!-- Populated by JavaScript -->
@@ -356,8 +381,8 @@
                 </div>
             </div>
 
-            <!-- SLIDE 9: Order Summary -->
-            <div class="slide" data-slide="9">
+            <!-- SLIDE 8: Order Summary -->
+            <div class="slide" data-slide="8">
                 <div class="slide-content summary-content">
                     <h1 class="slide-title">Your Booking Summary</h1>
                     <p class="slide-subtitle">Review your private chef experience details</p>
@@ -444,7 +469,7 @@
                                     <span class="summary-icon">👨‍🍳</span>
                                     <h3>What to Expect</h3>
                                 </div>
-                                <ul class="expectations-list">
+                                    <ul class="expectations-list">
                                     <li>✅ Chef arrives 3 hours before dinner</li>
                                     <li>✅ Fresh ingredients prepared on-site</li>
                                     <li>✅ Professional service and presentation</li>
@@ -452,6 +477,16 @@
                                 </ul>
                             </div>
                         </div>
+                    </div>
+                    
+                    <!-- Go Back Button -->
+                    <div style="text-align: center; margin-top: 30px; padding-top: 25px; border-top: 2px solid #e5e0d8;">
+                        <button class="nav-btn" onclick="window.location.href='index.html'" style="background: #8b6f47; color: #ffffff; padding: 14px 40px; font-size: 1.1rem; border-radius: 10px; border: none; cursor: pointer; transition: all 0.3s ease;">
+                            ← Go Back to Test Models
+                        </button>
+                        <p style="margin-top: 15px; color: #6b5d4a; font-size: 0.9rem;">
+                            You can go back to test Model 1, Model 2, or return to the front page
+                        </p>
                     </div>
                 </div>
             </div>
@@ -480,18 +515,24 @@
                 <div class="guest-info-section">
                     <h4 class="section-title-small">Guest Information</h4>
                     
+                    <div class="info-banner-modal" style="background: #f0f7ff; border: 2px solid #b3d9ff; border-radius: 8px; padding: 12px; margin-bottom: 20px; font-size: 0.9rem; color: #3d2817;">
+                        <strong>💡 Customization:</strong> By adding names and preferences here, you can customize special spices, different allergies, dietary preferences (vegetarian, vegan, etc.), and special needs for each guest.
+                    </div>
+                    
                     <div class="form-group-modal">
                         <label for="guest-name-input">Name (Optional)</label>
                         <input type="text" id="guest-name-input" placeholder="Enter guest name" class="modal-input">
+                        <small class="helper-text-modal">Adding a name helps us personalize the experience</small>
                     </div>
                     
                     <div class="form-group-modal">
                         <label for="spice-level">Preferred Spice Level</label>
                         <select id="spice-level" class="modal-select">
-                            <option value="mild">Mild</option>
-                            <option value="medium" selected>Medium</option>
-                            <option value="hot">Hot</option>
+                            <option value="mild" selected>🌶️ Easy (Mild)</option>
+                            <option value="medium">🌶️🌶️ Medium</option>
+                            <option value="hot">🌶️🌶️🌶️ Hot</option>
                         </select>
+                        <small class="helper-text-modal">Standard is always Easy (level 1). You can customize this if needed.</small>
                     </div>
                     
                     <div class="form-group-modal">
@@ -514,23 +555,35 @@
                                 <span>Halal</span>
                             </label>
                         </div>
+                        <small class="helper-text-modal">Select dietary preferences for this guest</small>
                     </div>
                     
                     <div class="form-group-modal">
                         <label for="special-needs">Special Needs or Allergies</label>
-                        <textarea id="special-needs" class="modal-textarea" placeholder="Any special dietary needs, allergies, or requirements. We will contact you to confirm." rows="3"></textarea>
-                        <small class="helper-text-modal">We will contact you to ensure we accommodate your needs perfectly.</small>
+                        <textarea id="special-needs" class="modal-textarea" placeholder="List any allergies, special dietary needs, or requirements. For example: 'No peanuts', 'Lactose intolerant', 'No shellfish', etc." rows="3"></textarea>
+                        <small class="helper-text-modal">Specify any allergies or special dietary requirements. We will contact you to ensure we accommodate your needs perfectly.</small>
                     </div>
                     
                     <div class="form-group-modal">
                         <label for="dislikes">Things I Don't Like</label>
-                        <textarea id="dislikes" class="modal-textarea" placeholder="List any ingredients or dishes you don't like" rows="2"></textarea>
+                        <textarea id="dislikes" class="modal-textarea" placeholder="List any ingredients or dishes you don't like. For example: 'No cilantro', 'Don't like spicy food', 'No seafood', etc." rows="2"></textarea>
+                        <small class="helper-text-modal">Tell us about any ingredients or dishes to avoid</small>
                     </div>
                 </div>
                 
                 <!-- Menu Selection Section -->
                 <div class="menu-selection-section">
                     <h4 class="section-title-small">Menu Selection</h4>
+                    
+                    <div class="info-banner-modal" style="background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%); border: 2px solid #ffcc80; border-radius: 10px; padding: 15px; margin-bottom: 20px;">
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                            <span style="font-size: 1.3rem;">⭐</span>
+                            <strong style="color: #3d2817; font-size: 1rem;">Best of the Best Indonesian Cuisine</strong>
+                        </div>
+                        <p style="color: #3d2817; font-size: 0.9rem; line-height: 1.6; margin: 0;">
+                            We have taken the best of the best Indonesian food here. Everything is hand-chosen to represent the finest dishes from across the Indonesian archipelago. Each menu item has been carefully selected for its authentic flavors, cultural significance, and culinary excellence. From street food favorites to ceremonial dishes, every option represents the pinnacle of Indonesian cuisine.
+                        </p>
+                    </div>
                     
                     <div class="dietary-filters-modal">
                         <div class="filter-label">Filter by:</div>

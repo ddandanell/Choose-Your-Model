@@ -12,14 +12,14 @@ let bookingData = {
     children5to10: 0,
     children0to4: 0,
     cuisine: null,
-    menuType: 'normal', // 'normal' = 3 hours cooking, 'extended' = 4 hours cooking
+    menuType: 'normal', // 'normal' = 5 hours total (2h shopping+meeting + 3h cooking), 'extended' = 6 hours total (2h shopping+meeting + 4h cooking)
     specialRequests: ''
 };
 
 let currentSlide = 1;
-const totalSlides = 6;
+const totalSlides = 5;
 
-const stepLabels = ['Contact', 'Date & Time', 'Guests', 'Cuisine', 'Service', 'Summary'];
+const stepLabels = ['Date & Time', 'Guests', 'Cuisine', 'Service', 'Summary'];
 
 // Initialize
 document.addEventListener('DOMContentLoaded', function() {
@@ -114,26 +114,34 @@ function calculateChefSchedule() {
     const diningDate = new Date(bookingData.date);
     diningDate.setHours(parseInt(hours), parseInt(minutes), 0, 0);
     
-    // Chef arrives 4 hours before dining time
-    const arrivalDate = new Date(diningDate.getTime() - (4 * 60 * 60 * 1000));
+    // Calculate total service time based on menu type
+    // Normal: 5 hours total (2h shopping+meeting + 3h cooking)
+    // Extended: 6 hours total (2h shopping+meeting + 4h cooking)
+    const cookingHours = bookingData.menuType === 'extended' ? 4 : 3;
+    const totalServiceHours = 2 + cookingHours; // 2 hours always for shopping+meeting
+    
+    // Chef arrives 5-6 hours before dining time
+    // Normal menu (5h service): arrive 5 hours before
+    // Extended menu (6h service): arrive 6 hours before
+    const arrivalHoursBefore = totalServiceHours; // Chef arrives exactly when service starts (5h for normal, 6h for extended)
+    const arrivalDate = new Date(diningDate.getTime() - (arrivalHoursBefore * 60 * 60 * 1000));
     
     const arrivalTime = formatTime(arrivalDate);
     bookingData.chefArrivalTime = arrivalTime;
+    bookingData.totalServiceHours = totalServiceHours;
+    bookingData.cookingHours = cookingHours;
     
     // Update schedule info
     if (document.getElementById('chef-schedule-info')) {
-        const consultationEnd = new Date(arrivalDate.getTime() + (30 * 60 * 1000));
-        const shoppingEnd = new Date(arrivalDate.getTime() + (2.5 * 60 * 60 * 1000)); // 30 min consultation + 2 hours shopping
-        const cookingStart = shoppingEnd;
-        
+        const menuTypeText = bookingData.menuType === 'extended' ? 'Extended Menu (6 hours total)' : 'Normal Menu (5 hours total)';
         document.getElementById('chef-schedule-info').innerHTML = `
-            Your selected time: ${formatTimeDisplay(bookingData.diningTime)}<br>
-            Chef arrives approximately: ${formatTimeDisplay(arrivalTime)} (4 hours before)<br><br>
-            The chef will:<br>
-            • Arrive 4 hours before your dining time<br>
-            • Meet with you for consultation and go shopping<br>
-            • Return and prepare your meal<br>
-            • Serve at your chosen dining time
+            Your selected dining time: ${formatTimeDisplay(bookingData.diningTime)}<br>
+            Menu type: ${menuTypeText}<br>
+            Chef arrives: ${formatTimeDisplay(arrivalTime)} (${arrivalHoursBefore} hours before)<br><br>
+            Service breakdown:<br>
+            • 2 hours: Shopping and meeting/consultation<br>
+            • ${cookingHours} hour${cookingHours > 1 ? 's' : ''}: Cooking and preparation<br>
+            • Total service time: ${totalServiceHours} hours (you pay for these ${totalServiceHours} hours)
         `;
     }
     
@@ -145,19 +153,18 @@ function formatTime(date) {
 }
 
 function updateTimeline() {
-    if (!bookingData.chefArrivalTime) return;
+    if (!bookingData.chefArrivalTime || !bookingData.totalServiceHours) return;
     
     const [arrivalHour, arrivalMin] = bookingData.chefArrivalTime.split(':');
     const arrival = parseInt(arrivalHour) * 60 + parseInt(arrivalMin);
     
-    // Chef arrives 4 hours before, so we fit consultation, shopping, and cooking within 4 hours
-    // Timeline: 30 min consultation, 2 hours shopping, 1.5 hours cooking
-    const consultationEnd = arrival + 30; // 30 minutes
-    const shoppingEnd = arrival + (2.5 * 60); // 30 min consultation + 2 hours shopping = 2.5 hours total
-    const cookingEnd = arrival + (4 * 60); // Total 4 hours before dining
+    // Always 2 hours for shopping and meeting combined
+    // Cooking time varies: 3 hours for normal, 4 hours for extended
+    const shoppingMeetingEnd = arrival + (2 * 60); // 2 hours for shopping + meeting
+    const cookingEnd = arrival + (bookingData.totalServiceHours * 60); // Total service hours
     
     const formatTimeFromMinutes = (mins) => {
-        const h = Math.floor(mins / 60);
+        const h = Math.floor(mins / 60) % 24;
         const m = mins % 60;
         return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}`;
     };
@@ -166,13 +173,14 @@ function updateTimeline() {
         document.getElementById('timeline-arrival').textContent = `${formatTimeFromMinutes(arrival)} - Chef Arrives`;
     }
     if (document.getElementById('timeline-consultation')) {
-        document.getElementById('timeline-consultation').textContent = `${formatTimeFromMinutes(arrival)} - ${formatTimeFromMinutes(consultationEnd)}\nPersonal Consultation (20-30 min)`;
+        document.getElementById('timeline-consultation').textContent = `${formatTimeFromMinutes(arrival)} - ${formatTimeFromMinutes(shoppingMeetingEnd)}\nShopping & Meeting (2 hours)`;
     }
     if (document.getElementById('timeline-shopping')) {
-        document.getElementById('timeline-shopping').textContent = `${formatTimeFromMinutes(consultationEnd)} - ${formatTimeFromMinutes(shoppingEnd)}\nGrocery Shopping (2 hours)`;
+        document.getElementById('timeline-shopping').textContent = `${formatTimeFromMinutes(arrival)} - ${formatTimeFromMinutes(shoppingMeetingEnd)}\nShopping & Meeting (2 hours)`;
     }
     if (document.getElementById('timeline-cooking')) {
-        document.getElementById('timeline-cooking').textContent = `${formatTimeFromMinutes(shoppingEnd)} - ${formatTimeFromMinutes(cookingEnd)}\nCooking & Preparation (1.5 hours)`;
+        const cookingHours = bookingData.cookingHours || 1;
+        document.getElementById('timeline-cooking').textContent = `${formatTimeFromMinutes(shoppingMeetingEnd)} - ${formatTimeDisplay(bookingData.diningTime)}\nCooking & Preparation (${cookingHours} hour${cookingHours > 1 ? 's' : ''})`;
     }
     if (document.getElementById('timeline-serving')) {
         document.getElementById('timeline-serving').textContent = `${formatTimeDisplay(bookingData.diningTime)} - Your Dining Experience`;
@@ -247,13 +255,13 @@ function renderCuisineCards() {
         card.innerHTML = `
             <div class="cuisine-checkmark">✓</div>
             <div class="cuisine-icon">${cuisine.icon}</div>
-            <div class="cuisine-name">${cuisine.name}</div>
+            <div class="cuisine-name">${cuisine.name} Chef</div>
             <div class="cuisine-desc">${cuisine.chefRequirement}</div>
             <div class="cuisine-specialties">
-                <div class="specialty-title">Specialties include:</div>
+                <div class="specialty-title">Chef Specialties include:</div>
                 ${cuisine.specialties.map(s => `<div class="specialty-item">• ${s}</div>`).join('')}
             </div>
-            <div class="chef-badge">⭐ Chef Specialized</div>
+            <div class="chef-badge">⭐ Specialized ${cuisine.name} Chef</div>
         `;
         
         card.addEventListener('click', function() {
@@ -281,10 +289,10 @@ function nextSlide() {
             updateProgress();
             
             // Special handling for specific slides
-            if (currentSlide === 5) {
+            if (currentSlide === 4) {
                 updateScheduleSummary();
                 updateChefServiceDetails();
-            } else if (currentSlide === 6) {
+            } else if (currentSlide === 5) {
                 updateBookingSummary();
                 updatePricingSummary();
             }
@@ -325,31 +333,6 @@ function showSlide(slideNumber) {
 function validateCurrentSlide() {
     switch (currentSlide) {
         case 1:
-            const name = document.getElementById('customer-name').value.trim();
-            const whatsapp = document.getElementById('customer-whatsapp').value.trim();
-            const email = document.getElementById('customer-email').value.trim();
-            
-            if (!name || name.length < 2) {
-                alert('Please enter a valid name (at least 2 characters)');
-                return false;
-            }
-            
-            if (!whatsapp || whatsapp.length < 5) {
-                alert('Please enter a valid phone number');
-                return false;
-            }
-            
-            if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-                alert('Please enter a valid email address');
-                return false;
-            }
-            
-            bookingData.customerInfo.name = name;
-            bookingData.customerInfo.whatsapp = whatsapp;
-            bookingData.customerInfo.email = email;
-            return true;
-            
-        case 2:
             if (!bookingData.date) {
                 alert('Please select a date (minimum 3 days in advance)');
                 return false;
@@ -373,28 +356,28 @@ function validateCurrentSlide() {
             calculateChefSchedule();
             return true;
             
-        case 3:
+        case 2:
             if (bookingData.adults < 1) {
                 alert('At least 1 adult is required');
                 return false;
             }
             return true;
             
-        case 4:
+        case 3:
             if (!bookingData.cuisine) {
                 alert('Please select a cuisine');
                 return false;
             }
             return true;
             
-        case 5:
+        case 4:
             if (!document.getElementById('service-understood').checked) {
                 alert('Please confirm that you understand how the service works');
                 return false;
             }
             return true;
             
-        case 6:
+        case 5:
             if (!document.getElementById('pricing-understood').checked) {
                 alert('Please confirm that you understand the pricing structure');
                 return false;
@@ -438,23 +421,40 @@ function updateScheduleSummary() {
     const container = document.getElementById('schedule-summary');
     if (!container) return;
     
-    if (bookingData.date && bookingData.diningTime && bookingData.chefArrivalTime) {
+    if (bookingData.date && bookingData.diningTime && bookingData.chefArrivalTime && bookingData.totalServiceHours) {
         const date = new Date(bookingData.date);
         const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
         const formattedDate = date.toLocaleDateString('en-US', options);
+        
+        const menuTypeText = bookingData.menuType === 'extended' ? 'Extended Menu' : 'Normal Menu';
+        const cookingHours = bookingData.cookingHours || 1;
+        
+        // Calculate hours before dining time
+        const diningDateTime = new Date(bookingData.date + 'T' + bookingData.diningTime);
+        const arrivalDateTime = new Date(bookingData.date + 'T' + bookingData.chefArrivalTime);
+        const arrivalHoursBefore = Math.round((diningDateTime.getTime() - arrivalDateTime.getTime()) / (1000 * 60 * 60));
         
         container.innerHTML = `
             <h4>📅 Your Selected Schedule:</h4>
             <p><strong>Date:</strong> ${formattedDate}</p>
             <p><strong>Your dining time:</strong> ${formatTimeDisplay(bookingData.diningTime)}</p>
-            <p><strong>Chef arrival:</strong> ${formatTimeDisplay(bookingData.chefArrivalTime)} (4 hours before)</p>
+            <p><strong>Menu type:</strong> ${menuTypeText} (${bookingData.totalServiceHours} hours total)</p>
+            <p><strong>Chef arrival:</strong> ${formatTimeDisplay(bookingData.chefArrivalTime)} (${arrivalHoursBefore} hours before)</p>
+            <p><strong>Service breakdown:</strong></p>
+            <ul style="margin-left: 20px; margin-top: 8px;">
+                <li>Shopping and meeting: 2 hours</li>
+                <li>Cooking and preparation: ${cookingHours} hour${cookingHours > 1 ? 's' : ''}</li>
+            </ul>
         `;
     }
 }
 
-// Chef Service Details - Fixed 4 hours total
+// Chef Service Details - Dynamic based on menu type
 function updateChefServiceDetails() {
-    const totalHours = 4; // Chef arrives 4 hours before dining
+    // Calculate based on menu type
+    const cookingHours = bookingData.menuType === 'extended' ? 2 : 1;
+    const totalHours = 2 + cookingHours; // Always 2 hours shopping+meeting + cooking hours
+    
     const totalCost = totalHours * SERVICE_CONFIG.hourlyRate;
     
     const detailsEl = document.getElementById('chef-service-details');
@@ -468,12 +468,28 @@ function updateChefServiceDetails() {
         includesEl.innerHTML = `
             This covers:<br>
             • Chef's expertise and time<br>
-            • Consultation (30 minutes)<br>
-            • Shopping (2 hours)<br>
-            • Cooking (1.5 hours)<br>
+            • Shopping and meeting (2 hours)<br>
+            • Cooking and preparation (${cookingHours} hour${cookingHours > 1 ? 's' : ''})<br>
             • Equipment and tools<br>
-            • Kitchen cleanup
+            • Kitchen cleanup<br><br>
+            <strong>Total: ${totalHours} hours</strong>
         `;
+    }
+    
+    // Update menu type prices
+    const normalMenuEl = document.querySelector('.menu-type-option[data-menutype="normal"] .menu-type-price');
+    const extendedMenuEl = document.querySelector('.menu-type-option[data-menutype="extended"] .menu-type-price');
+    
+    if (normalMenuEl) {
+        const normalHours = 5; // 2h shopping+meeting + 3h cooking
+        const normalCost = normalHours * SERVICE_CONFIG.hourlyRate;
+        normalMenuEl.textContent = `Total: ${normalHours} hours = Rp ${normalCost.toLocaleString('id-ID')}`;
+    }
+    
+    if (extendedMenuEl) {
+        const extendedHours = 6; // 2h shopping+meeting + 4h cooking
+        const extendedCost = extendedHours * SERVICE_CONFIG.hourlyRate;
+        extendedMenuEl.textContent = `Total: ${extendedHours} hours = Rp ${extendedCost.toLocaleString('id-ID')}`;
     }
 }
 
@@ -487,20 +503,12 @@ function updateBookingSummary() {
     
     const cuisine = bookingData.cuisine ? CUISINE_OPTIONS[bookingData.cuisine] : null;
     
+    const totalGuests = bookingData.adults + bookingData.children5to10 + bookingData.children0to4;
     container.innerHTML = `
-        <p><strong>Customer:</strong> ${bookingData.customerInfo.name || 'Not provided'}</p>
-        <p><strong>WhatsApp:</strong> ${bookingData.customerInfo.whatsapp || 'Not provided'}</p>
-        <p><strong>Email:</strong> ${bookingData.customerInfo.email || 'Not provided'}</p>
-        <p><strong>Date:</strong> ${formattedDate}</p>
-        <p><strong>Dining Time:</strong> ${formatTimeDisplay(bookingData.diningTime)}</p>
-        <p><strong>Cuisine:</strong> ${cuisine ? cuisine.name : 'Not selected'}</p>
-        <p><strong>Chef Specialization:</strong> ${cuisine ? cuisine.chefRequirement : 'N/A'}</p>
-        <p><strong>Guests:</strong></p>
-        <ul style="margin-left: 20px; margin-top: 8px;">
-            <li>${bookingData.adults} Adults (11+ years)</li>
-            ${bookingData.children5to10 > 0 ? `<li>${bookingData.children5to10} Children (5-10 years)</li>` : ''}
-            ${bookingData.children0to4 > 0 ? `<li>${bookingData.children0to4} Young Child (0-4 years)</li>` : ''}
-        </ul>
+        <p><strong>📅 Date:</strong> ${formattedDate}</p>
+        <p><strong>🕐 Time:</strong> ${formatTimeDisplay(bookingData.diningTime)}</p>
+        <p><strong>👨‍🍳 Chef:</strong> ${cuisine ? cuisine.name + ' Chef' : 'Not selected'}</p>
+        <p><strong>👥 Guests:</strong> ${totalGuests} total (${bookingData.adults} adults${bookingData.children5to10 > 0 ? `, ${bookingData.children5to10} children` : ''}${bookingData.children0to4 > 0 ? `, ${bookingData.children0to4} young children` : ''})</p>
     `;
 }
 
@@ -509,8 +517,9 @@ function updatePricingSummary() {
     const container = document.getElementById('pricing-breakdown');
     if (!container) return;
     
-    // Fixed 4 hours total
-    const totalHours = 4;
+    // Calculate based on menu type
+    const cookingHours = bookingData.menuType === 'extended' ? 4 : 3;
+    const totalHours = 2 + cookingHours; // Always 2 hours shopping+meeting + cooking hours
     const chefServiceCost = totalHours * SERVICE_CONFIG.hourlyRate;
     
     // Calculate paying guests for ingredients
@@ -529,47 +538,24 @@ function updatePricingSummary() {
     
     container.innerHTML = `
         <div class="pricing-breakdown-box">
-            <h4>CHEF SERVICE (Fixed Cost)</h4>
-            <p>${totalHours} hours of chef service</p>
-            <p>${totalHours} × Rp ${SERVICE_CONFIG.hourlyRate.toLocaleString('id-ID')} = <strong>Rp ${chefServiceCost.toLocaleString('id-ID')}</strong></p>
-            <p style="margin-top: 15px;">Includes:</p>
-            <ul style="margin-left: 20px; margin-top: 8px;">
-                <li>Consultation (30 minutes)</li>
-                <li>Shopping (2 hours)</li>
-                <li>Cooking & preparation (1.5 hours)</li>
-                <li>Equipment and tools</li>
-                <li>Kitchen cleanup</li>
-            </ul>
-            <p style="margin-top: 15px;"><strong>CHEF SERVICE TOTAL: Rp ${chefServiceCost.toLocaleString('id-ID')}</strong></p>
+            <h4>👨‍🍳 CHEF SERVICE</h4>
+            <p><strong>${totalHours} hours × Rp ${SERVICE_CONFIG.hourlyRate.toLocaleString('id-ID')}/hour</strong></p>
+            <p style="font-size: 1.2rem; margin-top: 10px;"><strong>Rp ${chefServiceCost.toLocaleString('id-ID')}</strong></p>
+            <p style="font-size: 0.85rem; color: #666; margin-top: 8px;">2h shopping/meeting + ${cookingHours}h cooking</p>
         </div>
         
         <div class="pricing-breakdown-box">
-            <h4>INGREDIENTS (Variable Cost)</h4>
-            <p>Paying guests for ingredients:</p>
-            <ul style="margin-left: 20px; margin-top: 8px;">
-                <li>${bookingData.adults} adults: ${bookingData.adults} ${bookingData.adults === 1 ? 'person' : 'persons'}</li>
-                ${bookingData.children5to10 > 0 ? `<li>${bookingData.children5to10} children (5-10): ${(bookingData.children5to10 * 0.5).toFixed(1)} ${bookingData.children5to10 === 1 ? 'person' : 'persons'} (50%)</li>` : ''}
-                ${bookingData.children0to4 > 0 ? `<li>${bookingData.children0to4} young child (0-4): 0 (free)</li>` : ''}
-            </ul>
-            <p style="margin-top: 15px;"><strong>Total ingredient portions: ${payingPortions.toFixed(1)} ${payingPortions === 1 ? 'person' : 'persons'}</strong></p>
-            <hr style="margin: 20px 0; border: none; border-top: 2px solid #e5e0d8;">
-            <p><strong>ESTIMATED INGREDIENT COSTS:</strong></p>
-            <p>Budget Option (Rp ${ingredientCosts.perPersonBudget.toLocaleString('id-ID')}/portion)<br>
-            ${payingPortions.toFixed(1)} × Rp ${ingredientCosts.perPersonBudget.toLocaleString('id-ID')} = <strong>Rp ${budgetIngredient.toLocaleString('id-ID')}</strong></p>
-            <p>Mid-Range (Rp ${ingredientCosts.perPersonMidRange.toLocaleString('id-ID')}/portion)<br>
-            ${payingPortions.toFixed(1)} × Rp ${ingredientCosts.perPersonMidRange.toLocaleString('id-ID')} = <strong>Rp ${midRangeIngredient.toLocaleString('id-ID')}</strong></p>
-            <p>Premium (Rp ${ingredientCosts.perPersonPremium.toLocaleString('id-ID')}/portion)<br>
-            ${payingPortions.toFixed(1)} × Rp ${ingredientCosts.perPersonPremium.toLocaleString('id-ID')} = <strong>Rp ${premiumIngredient.toLocaleString('id-ID')}</strong></p>
-            <hr style="margin: 20px 0; border: none; border-top: 2px solid #e5e0d8;">
-            <p>💡 Actual cost determined during consultation based on your preferences and chef's shopping</p>
+            <h4>🥘 INGREDIENTS</h4>
+            <p style="font-size: 0.9rem; margin-bottom: 10px;">${payingPortions.toFixed(1)} paying ${payingPortions === 1 ? 'portion' : 'portions'}</p>
+            <p><strong>Budget:</strong> Rp ${budgetIngredient.toLocaleString('id-ID')}</p>
+            <p><strong>Mid-Range:</strong> Rp ${midRangeIngredient.toLocaleString('id-ID')}</p>
+            <p><strong>Premium:</strong> Rp ${premiumIngredient.toLocaleString('id-ID')}</p>
+            <p style="font-size: 0.85rem; color: #666; margin-top: 8px;">💡 Actual cost set during consultation</p>
         </div>
         
-        <div class="pricing-breakdown-box">
-            <h4>TOTAL ESTIMATED COST</h4>
-            <p>Chef Service: <strong>Rp ${chefServiceCost.toLocaleString('id-ID')}</strong></p>
-            <p>Ingredients (est): <strong>Rp ${budgetIngredient.toLocaleString('id-ID')} - Rp ${premiumIngredient.toLocaleString('id-ID')}</strong></p>
-            <hr style="margin: 20px 0; border: none; border-top: 2px solid #8b6f47;">
-            <p class="total"><strong>TOTAL RANGE: Rp ${totalMin.toLocaleString('id-ID')} - Rp ${totalMax.toLocaleString('id-ID')}</strong></p>
+        <div class="pricing-breakdown-box" style="background: #faf8f3; border: 2px solid #8b6f47;">
+            <h4>💰 TOTAL ESTIMATE</h4>
+            <p style="font-size: 1.3rem; margin-top: 10px;"><strong>Rp ${totalMin.toLocaleString('id-ID')} - Rp ${totalMax.toLocaleString('id-ID')}</strong></p>
         </div>
     `;
 }

@@ -10,67 +10,41 @@
     <div class="booking-container">
         <!-- Progress Header -->
         <header class="progress-header">
-            <div class="step-counter">Step <span id="current-slide">1</span> of <span id="total-slides">6</span></div>
-            <div class="step-label" id="step-label">Contact</div>
+            <div class="workflow-label">This is the workflow of model2</div>
+            <div class="header-right">
+                <div class="step-counter">Step <span id="current-slide">1</span> of <span id="total-slides">5</span></div>
+                <div class="step-label" id="step-label">Date & Time</div>
+            </div>
         </header>
 
         <!-- Progress Bar with Step Indicators -->
         <div class="progress-steps">
             <div class="step-indicator" data-step="1">
                 <div class="step-circle" id="step-circle-1"></div>
-                <span class="step-name">Contact</span>
+                <span class="step-name">Date & Time</span>
             </div>
             <div class="step-indicator" data-step="2">
                 <div class="step-circle" id="step-circle-2"></div>
-                <span class="step-name">Date & Time</span>
+                <span class="step-name">Guests</span>
             </div>
             <div class="step-indicator" data-step="3">
                 <div class="step-circle" id="step-circle-3"></div>
-                <span class="step-name">Guests</span>
+                <span class="step-name">Cuisine</span>
             </div>
             <div class="step-indicator" data-step="4">
                 <div class="step-circle" id="step-circle-4"></div>
-                <span class="step-name">Cuisine</span>
+                <span class="step-name">Service</span>
             </div>
             <div class="step-indicator" data-step="5">
                 <div class="step-circle" id="step-circle-5"></div>
-                <span class="step-name">Service</span>
-            </div>
-            <div class="step-indicator" data-step="6">
-                <div class="step-circle" id="step-circle-6"></div>
                 <span class="step-name">Summary</span>
             </div>
         </div>
 
         <!-- Slide Container -->
         <div class="slides-container">
-            <!-- SLIDE 1: Contact Information -->
+            <!-- SLIDE 1: Date, Time & Service Type -->
             <div class="slide active" data-slide="1">
-                <div class="slide-content">
-                    <h1 class="slide-title">Welcome to Our Private Chef Service</h1>
-                    <p class="slide-subtitle">Please provide your contact information</p>
-                    
-                    <div class="form-group">
-                        <label for="customer-name">Full Name *</label>
-                        <input type="text" id="customer-name" class="form-input" placeholder="Enter your full name" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="customer-whatsapp">Phone Number *</label>
-                        <input type="tel" id="customer-whatsapp" class="form-input" placeholder="Enter your phone number" required>
-                        <small class="helper-text">We'll use this for booking confirmations</small>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="customer-email">Email Address *</label>
-                        <input type="email" id="customer-email" class="form-input" placeholder="your.email@example.com" required>
-                        <small class="helper-text">Receipt and booking details will be sent here</small>
-                    </div>
-                </div>
-            </div>
-
-            <!-- SLIDE 2: Date, Time & Service Type -->
-            <div class="slide" data-slide="2">
                 <div class="slide-content">
                     <h1 class="slide-title">When would you like your private chef experience?</h1>
                     <p class="slide-subtitle">Select your preferred date and dining time</p>
@@ -101,15 +75,15 @@
                         <div class="info-content">
                             <div class="info-title">How it works:</div>
                             <div class="info-text" id="chef-schedule-info">
-                                Your chef will arrive approximately 4 hours before your dining time for consultation and preparation.
+                                Your chef will arrive 5-6 hours before your dining time. Service includes 2 hours for shopping and meeting, plus cooking time (3 hours for normal menu, 4 hours for extended menu). You pay for these service hours.
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- SLIDE 3: Guest Count -->
-            <div class="slide" data-slide="3">
+            <!-- SLIDE 2: Guest Count -->
+            <div class="slide" data-slide="2">
                 <div class="slide-content">
                     <h1 class="slide-title">How many guests will be dining?</h1>
                     <p class="slide-subtitle">Tell us about your party size</p>
@@ -177,17 +151,17 @@
                 </div>
             </div>
 
-            <!-- SLIDE 4: Cuisine & Chef Specialization -->
-            <div class="slide" data-slide="4">
+            <!-- SLIDE 3: Cuisine & Chef Specialization -->
+            <div class="slide" data-slide="3">
                 <div class="slide-content">
-                    <h1 class="slide-title">Choose Your Cuisine</h1>
-                    <p class="slide-subtitle">Select the culinary style for your private dining experience</p>
+                    <h1 class="slide-title">Choose Your Chef</h1>
+                    <p class="slide-subtitle">Select your specialized chef based on cuisine expertise</p>
                     
                     <div class="info-banner">
                         <div class="info-icon">👨‍🍳</div>
                         <div class="info-content">
                             <div class="info-title">Chef Specialization:</div>
-                            <div class="info-text">All our chefs have 5+ years of specialized experience in their respective cuisines.</div>
+                            <div class="info-text">Each chef is a specialist in their cuisine with 5+ years of dedicated experience. When you choose Indonesian, you get an Indonesian Chef. When you choose Italian, you get an Italian Chef. Each chef is an expert in their culinary tradition.</div>
                         </div>
                     </div>
                     
@@ -198,17 +172,17 @@
                     <div class="info-banner">
                         <div class="info-icon">👨‍🍳</div>
                         <div class="info-content">
-                            <div class="info-title">Why Chef Specialization Matters:</div>
+                            <div class="info-title">Why Choosing the Right Chef Matters:</div>
                             <div class="info-text">
-                                Each cuisine requires unique ingredient knowledge, technique mastery, cultural understanding, and flavor profile expertise. Your chef will have 5+ years dedicated to your chosen cuisine.
+                                Each cuisine requires unique ingredient knowledge, technique mastery, cultural understanding, and flavor profile expertise. Your specialized chef brings years of dedicated experience in their cuisine. An Indonesian Chef knows Indonesian ingredients, techniques, and flavors. An Italian Chef knows Italian ingredients, techniques, and flavors. This specialization ensures an authentic, expert-level dining experience.
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- SLIDE 5: Service Explanation & Consultation Details -->
-            <div class="slide" data-slide="5">
+            <!-- SLIDE 4: Service Explanation & Consultation Details -->
+            <div class="slide" data-slide="4">
                 <div class="slide-content">
                     <h1 class="slide-title">How Our Private Chef Service Works</h1>
                     <p class="slide-subtitle">Understanding Your Experience</p>
@@ -226,39 +200,31 @@
                         </div>
                         
                         <div class="timeline-item">
-                            <div class="timeline-time" id="timeline-consultation">3:00 PM - 3:30 PM<br>Personal Consultation (20-30 min)</div>
-                            <div class="timeline-content">
-                                The chef will discuss with you:<br>
-                                ✓ Menu preferences & desired dishes<br>
-                                ✓ Dietary restrictions & allergies<br>
-                                ✓ Vegetarian/vegan requirements<br>
-                                ✓ Spice level preferences<br>
-                                ✓ Ingredient quality level you want<br>
-                                ✓ Any special requests<br><br>
-                                Together, you'll finalize the menu and ingredient shopping list.
-                            </div>
-                        </div>
-                        
-                        <div class="timeline-item">
-                            <div class="timeline-time" id="timeline-shopping">3:30 PM - 5:30 PM<br>Grocery Shopping (2 hours)</div>
+                            <div class="timeline-time" id="timeline-consultation">Shopping & Meeting (2 hours)</div>
                             <div class="timeline-content">
                                 The chef will:<br>
+                                ✓ Meet with you to discuss menu preferences, dietary restrictions, and special requests<br>
                                 ✓ Visit the best markets for your chosen cuisine<br>
-                                ✓ Select the freshest ingredients<br>
-                                ✓ Purchase based on your budget and preferences discussed<br>
-                                ✓ Keep all receipts for you<br><br>
-                                💡 You pay ONLY the actual receipt amount - no markup!
+                                ✓ Select the freshest ingredients based on your budget<br>
+                                ✓ Purchase ingredients and keep all receipts for you<br><br>
+                                💡 You pay ONLY the actual receipt amount - no markup!<br>
+                                💡 This includes both the meeting/consultation and shopping time (2 hours total)
                             </div>
                         </div>
                         
                         <div class="timeline-item">
-                            <div class="timeline-time" id="timeline-cooking">5:30 PM - 7:00 PM<br>Cooking & Preparation (1.5 hours)</div>
+                            <div class="timeline-time" id="timeline-shopping" style="display: none;"></div>
+                        </div>
+                        
+                        <div class="timeline-item">
+                            <div class="timeline-time" id="timeline-cooking">Cooking & Preparation</div>
                             <div class="timeline-content">
                                 The chef will:<br>
                                 ✓ Prepare all ingredients<br>
                                 ✓ Cook your multi-course meal<br>
                                 ✓ Maintain a clean workspace<br>
                                 ✓ Plate dishes beautifully<br><br>
+                                Cooking time: 1 hour for normal menu, 2 hours for extended menu<br>
                                 You can watch, learn, or relax!
                             </div>
                         </div>
@@ -281,22 +247,26 @@
                                 <div class="menu-type-icon">🍽️</div>
                                 <div class="menu-type-name">Normal Menu</div>
                                 <div class="menu-type-desc">Standard multi-course meal</div>
-                                <div class="menu-type-price">Total: 4 hours = Rp 3,200,000</div>
+                                <div class="menu-type-price">Total: 5 hours = Rp 4,000,000</div>
+                                <div class="menu-type-breakdown" style="font-size: 0.85em; color: #666; margin-top: 5px;">2h shopping+meeting + 3h cooking</div>
                             </div>
                             <div class="menu-type-option" data-menutype="extended">
                                 <div class="menu-type-icon">🍷</div>
                                 <div class="menu-type-name">Extended Menu</div>
                                 <div class="menu-type-desc">Elaborate feast with many dishes</div>
-                                <div class="menu-type-price">Total: 4 hours = Rp 3,200,000</div>
+                                <div class="menu-type-price">Total: 6 hours = Rp 4,800,000</div>
+                                <div class="menu-type-breakdown" style="font-size: 0.85em; color: #666; margin-top: 5px;">2h shopping+meeting + 4h cooking</div>
                             </div>
                         </div>
                         <div class="info-banner">
                             <div class="info-icon">ℹ️</div>
                             <div class="info-content">
                                 <div class="info-text">
-                                    Chef arrives 4 hours before your dining time<br>
-                                    Includes: 30 min consultation, 2 hours shopping, 1.5 hours cooking<br>
-                                    All menus use the same 4-hour service time
+                                    Chef arrives 5-6 hours before your dining time (based on menu type)<br>
+                                    Always includes: 2 hours for shopping and meeting<br>
+                                    Normal menu: +3 hours cooking (5 hours total)<br>
+                                    Extended menu: +4 hours cooking (6 hours total)<br>
+                                    You pay for these service hours
                                 </div>
                             </div>
                         </div>
@@ -310,16 +280,17 @@
                                 <div class="pricing-content">
                                     <div class="pricing-title">CHEF SERVICE (Fixed)</div>
                                     <div class="pricing-details" id="chef-service-details">
-                                        4 hours × Rp 800,000/hour = Rp 3,200,000
+                                        5 hours × Rp 800,000/hour = Rp 4,000,000 (normal menu)<br>
+                                        6 hours × Rp 800,000/hour = Rp 4,800,000 (extended menu)
                                     </div>
                                     <div class="pricing-includes" id="pricing-includes-text">
                                         This covers:<br>
                                         • Chef's expertise and time<br>
-                                        • Consultation (30 minutes)<br>
-                                        • Shopping (2 hours)<br>
-                                        • Cooking (1.5 hours)<br>
+                                        • Shopping and meeting (2 hours)<br>
+                                        • Cooking and preparation (3-4 hours based on menu type)<br>
                                         • Equipment and tools<br>
-                                        • Kitchen cleanup
+                                        • Kitchen cleanup<br><br>
+                                        <strong>Total: 5-6 hours (you pay for these service hours)</strong>
                                     </div>
                                 </div>
                             </div>
@@ -367,58 +338,55 @@
                 </div>
             </div>
 
-            <!-- SLIDE 6: Price Summary & Final Estimate -->
-            <div class="slide" data-slide="6">
+            <!-- SLIDE 5: Price Summary & Final Estimate -->
+            <div class="slide" data-slide="5">
                 <div class="slide-content">
-                    <h1 class="slide-title">Your Booking Summary & Pricing</h1>
-                    <p class="slide-subtitle">Review your booking details and estimated costs</p>
+                    <h1 class="slide-title">Your Booking Summary</h1>
+                    <p class="slide-subtitle">Review your details and pricing</p>
                     
                     <div class="summary-section">
-                        <h3 class="section-title">📋 BOOKING DETAILS</h3>
+                        <h3 class="section-title">📋 Details</h3>
                         <div class="summary-details" id="booking-details-summary">
                             <!-- Populated by JavaScript -->
                         </div>
                     </div>
                     
                     <div class="summary-section">
-                        <h3 class="section-title">💰 PRICING BREAKDOWN</h3>
+                        <h3 class="section-title">💰 Pricing</h3>
                         <div class="pricing-breakdown" id="pricing-breakdown">
                             <!-- Populated by JavaScript -->
                         </div>
                     </div>
                     
-                    <div class="payment-info">
-                        <h3 class="section-title">📝 How Payment Works:</h3>
-                        <div class="payment-steps">
-                            <div class="payment-step">
-                                <div class="step-number">1</div>
-                                <div class="step-content">NOW: Pay chef service deposit (50%)<br>Remaining chef fee paid on service day</div>
-                            </div>
-                            <div class="payment-step">
-                                <div class="step-number">2</div>
-                                <div class="step-content">DURING CONSULTATION: Discuss ingredient budget<br>You control how much to spend</div>
-                            </div>
-                            <div class="payment-step">
-                                <div class="step-number">3</div>
-                                <div class="step-content">AFTER SHOPPING: Chef returns with groceries & receipts<br>You pay exact receipt amount (no markup)</div>
-                            </div>
-                            <div class="payment-step">
-                                <div class="step-number">4</div>
-                                <div class="step-content">ENJOY: Your personalized dining experience!</div>
-                            </div>
+                    <div class="payment-info" style="background: #fff3e0; border: 2px solid #ffcc80; border-radius: 10px; padding: 15px; margin: 20px 0;">
+                        <h3 class="section-title" style="font-size: 1rem; margin-bottom: 12px;">📝 Payment:</h3>
+                        <div style="font-size: 0.9rem; line-height: 1.6;">
+                            <p><strong>1.</strong> Pay 50% chef service deposit now</p>
+                            <p><strong>2.</strong> Discuss ingredient budget during consultation</p>
+                            <p><strong>3.</strong> Pay remaining chef fee + ingredient costs (exact receipt amount)</p>
                         </div>
                     </div>
                     
                     <div class="form-group">
                         <label class="checkbox-label">
                             <input type="checkbox" id="pricing-understood" required>
-                            <span>I understand that chef service fee is fixed and ingredient costs are separate and variable</span>
+                            <span>I understand: Chef service is fixed. Ingredients are separate and variable.</span>
                         </label>
                     </div>
                     
                     <div class="form-group">
                         <label for="special-requests">Special Requests or Notes</label>
                         <textarea id="special-requests" class="form-textarea" placeholder="Any dietary restrictions, allergies, favorite dishes, or special requests for the chef?" rows="4"></textarea>
+                    </div>
+                    
+                    <!-- Go Back Button -->
+                    <div style="text-align: center; margin-top: 30px; padding-top: 25px; border-top: 2px solid #e5e0d8;">
+                        <button class="nav-btn" onclick="window.location.href='index.html'" style="background: #8b6f47; color: #ffffff; padding: 14px 40px; font-size: 1.1rem; border-radius: 10px; border: none; cursor: pointer; transition: all 0.3s ease;">
+                            ← Go Back to Test Models
+                        </button>
+                        <p style="margin-top: 15px; color: #6b5d4a; font-size: 0.9rem;">
+                            You can go back to test Model 1, Model 2, or return to the front page
+                        </p>
                     </div>
                 </div>
             </div>

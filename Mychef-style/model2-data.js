@@ -2,9 +2,9 @@
 
 const CUISINE_OPTIONS = {
     italian: {
-        name: "Italian Cuisine",
+        name: "Italian",
         icon: "🍝",
-        chefRequirement: "5+ years Italian culinary experience",
+        chefRequirement: "Italian Chef with 5+ years specialized experience in Italian cuisine",
         specialties: [
             "Fresh pasta from scratch",
             "Risotto & regional classics",
@@ -18,9 +18,9 @@ const CUISINE_OPTIONS = {
         }
     },
     french: {
-        name: "French Cuisine",
+        name: "French",
         icon: "🥖",
-        chefRequirement: "5+ years French culinary experience",
+        chefRequirement: "French Chef with 5+ years specialized experience in French cuisine",
         specialties: [
             "French sauces & techniques",
             "Coq au vin, beef bourguignon",
@@ -34,9 +34,9 @@ const CUISINE_OPTIONS = {
         }
     },
     indonesian: {
-        name: "Indonesian Cuisine",
+        name: "Indonesian",
         icon: "🍜",
-        chefRequirement: "5+ years Indonesian culinary experience",
+        chefRequirement: "Indonesian Chef with 5+ years specialized experience in Indonesian cuisine",
         specialties: [
             "Rendang, bebek betutu, sate",
             "Regional specialties",

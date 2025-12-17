@@ -21,9 +21,9 @@ let bookingData = {
 };
 
 let currentSlide = 1;
-const totalSlides = 9;
+const totalSlides = 8;
 
-const stepLabels = ['Contact', 'Date', 'Guests', 'Time', 'Cuisine', 'Courses', 'Price Tier', 'Menu', 'Summary'];
+const stepLabels = ['Date', 'Guests', 'Time', 'Cuisine', 'Courses', 'Price Tier', 'Menu', 'Summary'];
 
 // Initialize
 document.addEventListener('DOMContentLoaded', function() {
@@ -133,6 +133,18 @@ function initializeEventListeners() {
     document.getElementById('modal-close').addEventListener('click', closeMenuModal);
     document.getElementById('modal-cancel').addEventListener('click', closeMenuModal);
     document.getElementById('modal-save').addEventListener('click', saveGuestMenu);
+    
+    // Close dropdowns when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('.menu-dropdown')) {
+            document.querySelectorAll('.menu-dropdown-list.active').forEach(list => {
+                list.classList.remove('active');
+            });
+            document.querySelectorAll('.menu-dropdown-btn.active').forEach(btn => {
+                btn.classList.remove('active');
+            });
+        }
+    });
     
     // Dietary filter buttons in modal
     document.querySelectorAll('.filter-btn').forEach(btn => {
@@ -270,9 +282,39 @@ function updateTierOptions() {
     container.innerHTML = '';
     
     const tiers = [
-        { id: 'standard', name: 'Standard', icon: '⭐', desc: 'Quality ingredients, classic presentation.', popular: false },
-        { id: 'premium', name: 'Premium', icon: '⭐', desc: 'Premium ingredients, elevated presentation.', popular: true },
-        { id: 'luxury', name: 'Luxury', icon: '👑', desc: 'Finest ingredients, exceptional experience.', popular: false }
+        { 
+            id: 'standard', 
+            name: 'Standard', 
+            icon: '⭐', 
+            desc: 'Quality ingredients, classic presentation.', 
+            detailedDesc: `
+                <strong>Cost:</strong> Rp ${formatIDR(prices.standard)} per adult<br><br>
+                Quality ingredients from local markets. Classic preparation and authentic flavors. Great value for money.
+            `,
+            popular: false 
+        },
+        { 
+            id: 'premium', 
+            name: 'Premium', 
+            icon: '⭐', 
+            desc: 'Premium ingredients, elevated presentation.', 
+            detailedDesc: `
+                <strong>Cost:</strong> Rp ${formatIDR(prices.premium)} per adult<br><br>
+                Premium-grade ingredients from specialty suppliers. Higher quality cuts and enhanced presentation. Perfect for special occasions.
+            `,
+            popular: true 
+        },
+        { 
+            id: 'luxury', 
+            name: 'Luxury', 
+            icon: '👑', 
+            desc: 'Finest ingredients, exceptional experience.', 
+            detailedDesc: `
+                <strong>Cost:</strong> Rp ${formatIDR(prices.luxury)} per adult<br><br>
+                Finest ingredients available. Best meats (premium wagyu, organic poultry, prime seafood). Artisanal products. Restaurant-quality experience.
+            `,
+            popular: false 
+        }
     ];
     
     tiers.forEach(tier => {
@@ -288,6 +330,7 @@ function updateTierOptions() {
             <div class="tier-icon">${tier.icon}</div>
             <div class="tier-name">${tier.name}</div>
             <div class="tier-desc">${tier.desc}</div>
+            <div class="tier-detailed-desc">${tier.detailedDesc}</div>
             <div class="tier-price">Rp ${formatIDR(prices[tier.id])} per adult</div>
         `;
         
@@ -316,7 +359,7 @@ function initializeGuestMenus() {
             guestNumber: guestNumber++,
             type: 'adult',
             name: '',
-            spiceLevel: 'medium',
+            spiceLevel: 'mild',
             dietary: [],
             specialNeeds: '',
             dislikes: '',
@@ -369,6 +412,16 @@ function initializeGuestMenus() {
 
 function renderGuestsMenuList() {
     const container = document.getElementById('guests-menu-list');
+    if (!container) {
+        console.error('guests-menu-list container not found');
+        return;
+    }
+    
+    // Initialize guest menus if not already done
+    if (bookingData.guestMenus.length === 0) {
+        initializeGuestMenus();
+    }
+    
     container.innerHTML = '';
     
     bookingData.guestMenus.forEach(guest => {
@@ -387,7 +440,8 @@ function renderGuestsMenuList() {
         // Only show spice level for adults, not for children
         if (guest.spiceLevel && guest.type === 'adult') {
             const spiceEmoji = guest.spiceLevel === 'mild' ? '🌶️' : guest.spiceLevel === 'hot' ? '🌶️🌶️🌶️' : '🌶️🌶️';
-            infoBadges.push(`<span class="info-badge">${spiceEmoji} ${guest.spiceLevel}</span>`);
+            const spiceLabel = guest.spiceLevel === 'mild' ? 'Easy' : guest.spiceLevel === 'hot' ? 'Hot' : 'Medium';
+            infoBadges.push(`<span class="info-badge">${spiceEmoji} ${spiceLabel}</span>`);
         }
         if (guest.dietary && guest.dietary.length > 0) {
             infoBadges.push(`<span class="info-badge">${guest.dietary.join(', ')}</span>`);
@@ -454,6 +508,16 @@ let currentEditingGuestIndex = null;
 let currentDietaryFilter = 'all';
 
 function openMenuModal(guestIndex) {
+    // Initialize guest menus if not already done
+    if (bookingData.guestMenus.length === 0) {
+        initializeGuestMenus();
+    }
+    
+    if (!bookingData.guestMenus[guestIndex]) {
+        console.error('Guest not found at index:', guestIndex);
+        return;
+    }
+    
     currentEditingGuestIndex = guestIndex;
     currentDietaryFilter = 'all';
     const guest = bookingData.guestMenus[guestIndex];
@@ -465,7 +529,7 @@ function openMenuModal(guestIndex) {
     
     // Load guest information
     document.getElementById('guest-name-input').value = guest.name || '';
-    document.getElementById('spice-level').value = guest.spiceLevel || 'medium';
+    document.getElementById('spice-level').value = guest.spiceLevel || 'mild';
     document.getElementById('special-needs').value = guest.specialNeeds || '';
     document.getElementById('dislikes').value = guest.dislikes || '';
     
@@ -489,6 +553,14 @@ function openMenuModal(guestIndex) {
 
 function renderMenuOptions(guest) {
     const container = document.getElementById('modal-menu-options');
+    if (!container) {
+        console.error('modal-menu-options container not found');
+        return;
+    }
+    if (!guest) {
+        console.error('No guest provided to renderMenuOptions');
+        return;
+    }
     container.innerHTML = '';
     
     // Small Bites
@@ -546,9 +618,20 @@ function renderMenuDropdown(container, categoryKey, categoryName, selectedId, fi
     list.className = 'menu-dropdown-list';
     
     // Determine which menu to use based on guest type
+    if (currentEditingGuestIndex === null || !bookingData.guestMenus[currentEditingGuestIndex]) {
+        console.error('Invalid guest index for menu dropdown');
+        return;
+    }
+    
     const guest = bookingData.guestMenus[currentEditingGuestIndex];
     const isChild = guest.type === 'child5to10' || guest.type === 'child0to4';
     const menuSource = isChild ? kidsMenuData : menuData;
+    
+    // Check if menu data exists
+    if (!menuSource || !menuSource[categoryKey]) {
+        console.error(`Menu data not found for category: ${categoryKey}`);
+        return;
+    }
     
     // Filter items based on current filter
     let filteredItems = menuSource[categoryKey] || [];
@@ -572,26 +655,86 @@ function renderMenuDropdown(container, categoryKey, categoryName, selectedId, fi
         
         const icons = getDietaryIcons(item);
         
+        const detailedDesc = item.detailedDescription || item.description;
+        const hasDetailedInfo = item.detailedDescription && item.detailedDescription !== item.description;
+        
         option.innerHTML = `
             <div class="menu-option-header">
                 <div class="menu-option-name">${item.name}</div>
-                <div class="menu-option-icons">${icons}</div>
+                <div class="menu-option-icons">
+                    ${icons}
+                    ${hasDetailedInfo ? '<span class="help-icon" title="Read more about this dish">❓</span>' : ''}
+                </div>
             </div>
             <div class="menu-option-desc">${item.description}</div>
+            ${hasDetailedInfo ? `
+                <div class="menu-option-help-tooltip" style="display: none;">
+                    <div class="help-tooltip-content">
+                        <strong>Read more about ${item.name}:</strong><br><br>
+                        ${detailedDesc}
+                    </div>
+                </div>
+            ` : ''}
         `;
         
-        option.addEventListener('click', function() {
+        // Show help tooltip on hover over help icon
+        if (hasDetailedInfo) {
+            const helpIcon = option.querySelector('.help-icon');
+            const tooltip = option.querySelector('.menu-option-help-tooltip');
+            
+            if (helpIcon && tooltip) {
+                helpIcon.addEventListener('mouseenter', function(e) {
+                    e.stopPropagation();
+                    tooltip.style.display = 'block';
+                });
+                
+                helpIcon.addEventListener('mouseleave', function(e) {
+                    e.stopPropagation();
+                    tooltip.style.display = 'none';
+                });
+                
+                // Also allow hovering over tooltip itself
+                tooltip.addEventListener('mouseenter', function() {
+                    tooltip.style.display = 'block';
+                });
+                
+                tooltip.addEventListener('mouseleave', function() {
+                    tooltip.style.display = 'none';
+                });
+            }
+        }
+        
+        option.addEventListener('click', function(e) {
+            e.stopPropagation();
+            if (currentEditingGuestIndex === null || !bookingData.guestMenus[currentEditingGuestIndex]) {
+                console.error('No guest selected for editing');
+                return;
+            }
             bookingData.guestMenus[currentEditingGuestIndex][fieldName] = item.id;
             const icons = getDietaryIcons(item);
             btn.querySelector('span:first-child').innerHTML = item.name + (icons ? ' ' + icons : '');
             btn.classList.remove('active');
             list.classList.remove('active');
+            // Re-render to update preview
+            renderGuestsMenuList();
         });
         
         list.appendChild(option);
     });
     
-    btn.addEventListener('click', function() {
+    btn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        // Close other open dropdowns
+        document.querySelectorAll('.menu-dropdown-list.active').forEach(openList => {
+            if (openList !== list) {
+                openList.classList.remove('active');
+            }
+        });
+        document.querySelectorAll('.menu-dropdown-btn.active').forEach(openBtn => {
+            if (openBtn !== btn) {
+                openBtn.classList.remove('active');
+            }
+        });
         this.classList.toggle('active');
         list.classList.toggle('active');
     });
@@ -604,9 +747,27 @@ function renderMenuDropdown(container, categoryKey, categoryName, selectedId, fi
 
 function getDietaryIcons(item) {
     const icons = [];
+    
+    // Meat type icons
+    if (item.meatType) {
+        const meatIcons = {
+            'beef': '<span class="diet-icon meat-icon" title="Contains beef">🐄</span>',
+            'pork': '<span class="diet-icon meat-icon" title="Contains pork">🐷</span>',
+            'chicken': '<span class="diet-icon meat-icon" title="Contains chicken">🐔</span>',
+            'duck': '<span class="diet-icon meat-icon" title="Contains duck">🦆</span>',
+            'fish': '<span class="diet-icon meat-icon" title="Contains fish">🐟</span>',
+            'seafood': '<span class="diet-icon meat-icon" title="Contains seafood">🦐</span>'
+        };
+        if (meatIcons[item.meatType]) {
+            icons.push(meatIcons[item.meatType]);
+        }
+    }
+    
+    // Vegetarian icon
     if (item.vegetarian) {
         icons.push('<span class="diet-icon vegetarian" title="Vegetarian">🌿</span>');
     }
+    
     // Don't show spicy indicator for children
     const isChild = currentEditingGuestIndex !== null && 
                     bookingData.guestMenus[currentEditingGuestIndex] &&
@@ -615,12 +776,16 @@ function getDietaryIcons(item) {
     if (item.spicy && !isChild) {
         icons.push('<span class="diet-icon spicy" title="Spicy">🌶️</span>');
     }
-    // Check for seafood
-    const name = item.name.toLowerCase();
-    if (name.includes('fish') || name.includes('seafood') || name.includes('tuna') || 
-        name.includes('ikan') || name.includes('udang') || name.includes('sate lilit')) {
-        icons.push('<span class="diet-icon seafood" title="Contains seafood">🐟</span>');
+    
+    // Check for seafood if not already added via meatType
+    if (!item.meatType) {
+        const name = item.name.toLowerCase();
+        if (name.includes('fish') || name.includes('seafood') || name.includes('tuna') || 
+            name.includes('ikan') || name.includes('udang') || name.includes('sate lilit')) {
+            icons.push('<span class="diet-icon seafood" title="Contains seafood">🐟</span>');
+        }
     }
+    
     return icons.join(' ');
 }
 
@@ -661,6 +826,12 @@ function saveGuestMenu() {
 
 function nextSlide() {
     if (validateCurrentSlide()) {
+        // If on the last slide before summary, go back to index page
+        if (currentSlide === totalSlides - 1) {
+            window.location.href = 'index.html';
+            return;
+        }
+        
         if (currentSlide < totalSlides) {
             currentSlide++;
             showSlide(currentSlide);
@@ -669,13 +840,13 @@ function nextSlide() {
             // Special handling
             if (currentSlide === 6) {
                 updateTierOptions();
-            } else if (currentSlide === 8) {
+            } else if (currentSlide === 7) {
                 // Initialize guest menus if not already done
                 if (bookingData.guestMenus.length === 0) {
                     initializeGuestMenus();
                 }
                 renderGuestsMenuList();
-            } else if (currentSlide === 9) {
+            } else if (currentSlide === 8) {
                 renderSummary();
             }
         }
@@ -706,7 +877,7 @@ function showSlide(slideNumber) {
     document.getElementById('step-label').textContent = stepLabels[slideNumber - 1];
     
     // Special handling when showing menu customization slide
-    if (slideNumber === 8) {
+    if (slideNumber === 7) {
         // Initialize guest menus if not already done
         if (bookingData.guestMenus.length === 0) {
             initializeGuestMenus();
@@ -742,49 +913,25 @@ function updateProgress() {
 function validateCurrentSlide() {
     switch(currentSlide) {
         case 1:
-            const name = document.getElementById('customer-name').value.trim();
-            const phone = document.getElementById('customer-phone').value.trim();
-            const email = document.getElementById('customer-email').value.trim();
-            
-            if (!name || name.length < 2) {
-                alert('Please enter a valid name (at least 2 characters)');
-                return false;
-            }
-            
-            if (!phone || phone.length < 5) {
-                alert('Please enter a valid phone number');
-                return false;
-            }
-            
-            if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-                alert('Please enter a valid email address');
-                return false;
-            }
-            
-            bookingData.customerInfo.name = name;
-            bookingData.customerInfo.phone = phone;
-            bookingData.customerInfo.email = email;
-            return true;
-        case 2:
             if (!bookingData.date) {
                 alert('Please select a date');
                 return false;
             }
             return true;
-        case 3:
+        case 2:
             if (bookingData.adults < 1) {
                 alert('At least 1 adult is required');
                 return false;
             }
             return true;
-        case 6:
+        case 5:
             const minimum = pricingMatrix[bookingData.courseCount].minimum;
             if (bookingData.adults < minimum) {
                 alert(`Minimum ${minimum} adults required for ${bookingData.courseCount}-course selection`);
                 return false;
             }
             return true;
-        case 7:
+        case 6:
             if (!bookingData.priceTier) {
                 alert('Please select a price tier');
                 return false;
